@@ -5,14 +5,14 @@
   <TabInfoArray Name="TabInfoArray">
     <TabInfo>
       <wxString Value="/home/aron/Desktop/Test_area/Rig project/Controller/main.c" Name="FileName"/>
-      <int Value="34" Name="FirstVisibleLine"/>
+      <int Value="33" Name="FirstVisibleLine"/>
       <int Value="34" Name="CurrentLine"/>
       <wxArrayString Name="Bookmarks"/>
       <IntVector Name="CollapsedFolds"/>
     </TabInfo>
     <TabInfo>
       <wxString Value="/home/aron/Desktop/Test_area/LIBS/Helpers.c" Name="FileName"/>
-      <int Value="66" Name="FirstVisibleLine"/>
+      <int Value="63" Name="FirstVisibleLine"/>
       <int Value="64" Name="CurrentLine"/>
       <wxArrayString Name="Bookmarks"/>
       <IntVector Name="CollapsedFolds"/>

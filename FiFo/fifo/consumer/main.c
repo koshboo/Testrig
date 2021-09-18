@@ -74,7 +74,7 @@ int main(int argc, char **argv)
 		printf("Creating  in pipe  %s \n",pipein[i]);
 				fflush (stdout);
 		sprintf(pipeout[i],"pipes/from_DEC.%d",targets[i]);
-		printf("Creating  out pipe  %s \n",pipeout[i]);
+		printf("Creating out pipe  %s \n",pipeout[i]);
 				fflush (stdout);
 		if (access (pipein[i],F_OK)!= 0) {
 			mkfifo (pipein [i],0666);
