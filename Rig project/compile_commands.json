@@ -1,0 +1,29 @@
+[{
+  "file": "/home/aron/Desktop/Test_area/Rig project/Controller/main.c",
+  "directory": "/home/aron/Desktop/Test_area/Rig project/Controller",
+  "command": "/usr/bin/gcc-4.8  -c \"/home/aron/Desktop/Test_area/Rig project/Controller/main.c\" -o \"/home/aron/Desktop/Test_area/Rig project/Controller/main.c\".o  -g  -O0  -Wall -I. -I."
+ }, {
+  "file": "/home/aron/Desktop/Test_area/Rig project/Controller/Core.c",
+  "directory": "/home/aron/Desktop/Test_area/Rig project/Controller",
+  "command": "/usr/bin/gcc-4.8  -c \"/home/aron/Desktop/Test_area/Rig project/Controller/Core.c\" -o \"/home/aron/Desktop/Test_area/Rig project/Controller/Core.c\".o  -g  -O0  -Wall -I. -I."
+ }, {
+  "file": "/home/aron/Desktop/Test_area/Rig project/libss/ABE_IoPi.c",
+  "directory": "/home/aron/Desktop/Test_area/Rig project/Controller",
+  "command": "/usr/bin/gcc-4.8  -c \"/home/aron/Desktop/Test_area/Rig project/libss/ABE_IoPi.c\" -o \"/home/aron/Desktop/Test_area/Rig project/libss/ABE_IoPi.c\".o  -g  -O0  -Wall -I. -I."
+ }, {
+  "file": "/home/aron/Desktop/Test_area/Rig project/God/redis_helper.c",
+  "directory": "/home/aron/Desktop/Test_area/Rig project/Controller",
+  "command": "/usr/bin/gcc-4.8  -c \"/home/aron/Desktop/Test_area/Rig project/God/redis_helper.c\" -o \"/home/aron/Desktop/Test_area/Rig project/God/redis_helper.c\".o  -g  -O0  -Wall -I. -I."
+ }, {
+  "file": "/home/aron/Desktop/Test_area/Rig project/God/main.c",
+  "directory": "/home/aron/Desktop/Test_area/Rig project/God",
+  "command": "/usr/bin/gcc  -c \"/home/aron/Desktop/Test_area/Rig project/God/main.c\" -o \"/home/aron/Desktop/Test_area/Rig project/God/main.c\".o  -g  -O0  -Wall -I. -I."
+ }, {
+  "file": "/home/aron/Desktop/Test_area/Rig project/God/redis_helper.c",
+  "directory": "/home/aron/Desktop/Test_area/Rig project/God",
+  "command": "/usr/bin/gcc  -c \"/home/aron/Desktop/Test_area/Rig project/God/redis_helper.c\" -o \"/home/aron/Desktop/Test_area/Rig project/God/redis_helper.c\".o  -g  -O0  -Wall -I. -I."
+ }, {
+  "file": "/home/aron/Desktop/Test_area/Rig project/God/Helpers.c",
+  "directory": "/home/aron/Desktop/Test_area/Rig project/God",
+  "command": "/usr/bin/gcc  -c \"/home/aron/Desktop/Test_area/Rig project/God/Helpers.c\" -o \"/home/aron/Desktop/Test_area/Rig project/God/Helpers.c\".o  -g  -O0  -Wall -I. -I."
+ }]

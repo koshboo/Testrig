@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeLite_Workspace Name="fifo" Database="">
+  <Project Name="Producer" Path="Producer/Producer.project" Active="No"/>
+  <Project Name="consumer" Path="consumer/consumer.project" Active="Yes"/>
+  <BuildMatrix>
+    <WorkspaceConfiguration Name="Debug" Selected="yes">
+      <Project Name="Producer" ConfigName="Debug"/>
+      <Project Name="consumer" ConfigName="Debug"/>
+    </WorkspaceConfiguration>
+    <WorkspaceConfiguration Name="Release" Selected="yes">
+      <Project Name="Producer" ConfigName="Release"/>
+      <Project Name="consumer" ConfigName="Release"/>
+    </WorkspaceConfiguration>
+  </BuildMatrix>
+</CodeLite_Workspace>
