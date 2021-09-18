@@ -32,7 +32,7 @@ struct sqlret {
 } sqlret;
 void SIG_OK (int signum)
 {
-	printf ("Sig captures %d ",signum);			// Log start time
+	printf ("Sig captured abc %d ",signum);			// Log start time
 	fflush (stdout);
 }
 int main(int argc, char **argv)
