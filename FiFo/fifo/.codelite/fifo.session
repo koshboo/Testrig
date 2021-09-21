@@ -4,9 +4,16 @@
   <wxString Value="/home/aron/Desktop/Test_area/FiFo/fifo/fifo.workspace" Name="m_workspaceName"/>
   <TabInfoArray Name="TabInfoArray">
     <TabInfo>
-      <wxString Value="/home/aron/Desktop/Test_area/FiFo/fifo/consumer/main.c" Name="FileName"/>
-      <int Value="126" Name="FirstVisibleLine"/>
-      <int Value="115" Name="CurrentLine"/>
+      <wxString Value="/home/aron/Desktop/Test_area/FiFo/fifo/shared_mem_read/main.c" Name="FileName"/>
+      <int Value="6" Name="FirstVisibleLine"/>
+      <int Value="11" Name="CurrentLine"/>
+      <wxArrayString Name="Bookmarks"/>
+      <IntVector Name="CollapsedFolds"/>
+    </TabInfo>
+    <TabInfo>
+      <wxString Value="/home/aron/Desktop/Test_area/FiFo/fifo/shared_mem_writer/main.c" Name="FileName"/>
+      <int Value="0" Name="FirstVisibleLine"/>
+      <int Value="32" Name="CurrentLine"/>
       <wxArrayString Name="Bookmarks"/>
       <IntVector Name="CollapsedFolds"/>
     </TabInfo>
