@@ -54,7 +54,7 @@ int main(int argc, char **argv)
 	char name [] = "fifo";
 	strcpy(name,"Con");									// copy The file name to temporary variable
 	strcat(name,".err");								// Add .err to the filename for the error log
-	//freopen( name, "a", stdout );
+	freopen( name, "a", stdout );
 	char Temp_Arry[50];									// temprary array for multiple things
 	char pipein  [30][30];								// reader pipe text name
 	char pipeout [30][30];								// Writer pipe

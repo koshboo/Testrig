@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Workspace>
+  <Project Name="shared_mem_read">
+    <Options/>
+  </Project>
   <SubversionPath>
     <![CDATA[/home/aron/Desktop/Test_area/FiFo/fifo]]>
   </SubversionPath>

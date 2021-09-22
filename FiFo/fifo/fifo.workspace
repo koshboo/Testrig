@@ -2,8 +2,8 @@
 <CodeLite_Workspace Name="fifo" Database="">
   <Project Name="Producer" Path="Producer/Producer.project" Active="No"/>
   <Project Name="consumer" Path="consumer/consumer.project" Active="No"/>
-  <Project Name="shared_mem_writer" Path="shared_mem_writer/shared_mem_writer.project" Active="Yes"/>
-  <Project Name="shared_mem_read" Path="shared_mem_read/shared_mem_read.project" Active="No"/>
+  <Project Name="shared_mem_writer" Path="shared_mem_writer/shared_mem_writer.project" Active="No"/>
+  <Project Name="shared_mem_read" Path="shared_mem_read/shared_mem_read.project" Active="Yes"/>
   <BuildMatrix>
     <WorkspaceConfiguration Name="Debug" Selected="yes">
       <Project Name="Producer" ConfigName="Debug"/>
