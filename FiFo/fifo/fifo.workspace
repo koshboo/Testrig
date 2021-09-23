@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeLite_Workspace Name="fifo" Database="">
+  <Project Name="Producer" Path="Producer/Producer.project" Active="No"/>
+  <Project Name="consumer" Path="consumer/consumer.project" Active="No"/>
+  <Project Name="shared_mem_writer" Path="shared_mem_writer/shared_mem_writer.project" Active="No"/>
+  <Project Name="shared_mem_read" Path="shared_mem_read/shared_mem_read.project" Active="Yes"/>
+  <BuildMatrix>
+    <WorkspaceConfiguration Name="Debug" Selected="yes">
+      <Project Name="Producer" ConfigName="Debug"/>
+      <Project Name="consumer" ConfigName="Debug"/>
+      <Project Name="shared_mem_writer" ConfigName="Debug"/>
+      <Project Name="shared_mem_read" ConfigName="Debug"/>
+    </WorkspaceConfiguration>
+    <WorkspaceConfiguration Name="Release" Selected="yes">
+      <Project Name="Producer" ConfigName="Release"/>
+      <Project Name="consumer" ConfigName="Release"/>
+      <Project Name="shared_mem_writer" ConfigName="Release"/>
+      <Project Name="shared_mem_read" ConfigName="Release"/>
+    </WorkspaceConfiguration>
+  </BuildMatrix>
+</CodeLite_Workspace>

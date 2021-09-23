@@ -1,0 +1,20 @@
+User  - Permissions (integer number)
+
+1	- 	Create Programs
+2	- 	Active programs
+64	- 	Configure Rig
+128	- 	ADMIN
+
+Programs - Params Integer
+1	- 	Cycle Time
+2	- 	Temprature
+4	-	Errors
+8	-	Double Step
+16	-	Alternate power supply
+32	-	Water usage
+
+Program - status codes
+New
+Paused	
+Active
+Completed

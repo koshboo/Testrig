@@ -1,0 +1,3 @@
+#!/bin/bash
+sudo systemctl disable redis-server
+sudo systemctl stop redis-server

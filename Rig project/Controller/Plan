@@ -1,0 +1,38 @@
+controller plan
+
+Read file desinated by arg [0]
+*************************sample File*****************
+0,22,0,3   //   pin number, pin value,time,seconds
+0,22,1,3	 
+1,22,0,23,1 // Target,pin number,pin Value,target pin,Value
+2,22,0,24,[0..255]
+
+
+ram is on 0x20
+
+
+while (count <= tag_count -1) 					
+{
+	reboot = 0x00;
+	temp[0] = 0;
+	sprintf (temp,"%i",targets [count]);	// convert number to string 
+	printf ("target %i \n",tag_count);
+	rep = Rget (temp);
+	if ((rep != 0x00 ) & (strstr(rep, "ERR") == NULL)) 						// is target in redis set to a non 0 
+	{ 
+	i = atoi(rep);
+	if (kill (i,0) == 0){reboot = 0x01;}									//if active set reeboot > 0x00
+	}
+	if (reboot == 0x00) 
+	{ 
+	target [0]= 0;						
+	strcpy(target, "./");					// Add run command to target
+	strcat (target,"Controller");			// Add target name to target
+	
+	New_process (target,temp);				// Start new process
+	printf ("  %s %s started - %s \n",target,temp,get_time());
+	}
+	count ++;    
+	sleep (1);
+	
+} 				

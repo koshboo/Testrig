@@ -1,0 +1,11 @@
+object Form2: TForm2
+  Left = 953
+  Height = 274
+  Top = 269
+  Width = 320
+  Caption = 'Report Options'
+  FormStyle = fsSystemStayOnTop
+  OnCreate = FormCreate
+  Position = poMainFormCenter
+  LCLVersion = '1.2.4.0'
+end

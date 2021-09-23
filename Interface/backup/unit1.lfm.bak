@@ -1,0 +1,1217 @@
+object Form1: TForm1
+  Left = 414
+  Height = 937
+  Top = 51
+  Width = 1029
+  BorderStyle = bsNone
+  Caption = 'Form1'
+  ClientHeight = 910
+  ClientWidth = 1029
+  Menu = MainMenu1
+  OnCreate = FormCreate
+  Position = poScreenCenter
+  LCLVersion = '1.2.4.0'
+  object Tab_Manager: TPageControl
+    Left = 0
+    Height = 1000
+    Top = 0
+    Width = 1280
+    ActivePage = Sheet_Create_program
+    TabIndex = 2
+    TabOrder = 0
+    OnChange = Tab_ManagerChange
+    object Sheet_login: TTabSheet
+      Caption = 'Login'
+      ClientHeight = 965
+      ClientWidth = 1270
+      object Panel1: TPanel
+        Left = 472
+        Height = 301
+        Top = 224
+        Width = 368
+        BevelOuter = bvNone
+        ClientHeight = 301
+        ClientWidth = 368
+        TabOrder = 0
+        object Username1: TLabeledEdit
+          Left = 40
+          Height = 33
+          Top = 72
+          Width = 288
+          Alignment = taCenter
+          EditLabel.AnchorSideLeft.Control = Username1
+          EditLabel.AnchorSideRight.Control = Username1
+          EditLabel.AnchorSideRight.Side = asrBottom
+          EditLabel.AnchorSideBottom.Control = Username1
+          EditLabel.Left = 40
+          EditLabel.Height = 21
+          EditLabel.Top = 48
+          EditLabel.Width = 288
+          EditLabel.Caption = 'Username'
+          EditLabel.ParentColor = False
+          TabOrder = 0
+          OnKeyPress = Username1KeyPress
+        end
+        object Password: TLabeledEdit
+          Left = 40
+          Height = 33
+          Top = 160
+          Width = 288
+          Alignment = taCenter
+          EchoMode = emPassword
+          EditLabel.AnchorSideLeft.Control = Password
+          EditLabel.AnchorSideRight.Control = Password
+          EditLabel.AnchorSideRight.Side = asrBottom
+          EditLabel.AnchorSideBottom.Control = Password
+          EditLabel.Left = 40
+          EditLabel.Height = 21
+          EditLabel.Top = 136
+          EditLabel.Width = 288
+          EditLabel.Caption = 'Password'
+          EditLabel.ParentColor = False
+          PasswordChar = '*'
+          TabOrder = 1
+          OnKeyPress = PasswordKeyPress
+        end
+        object Login1: TButton
+          Left = 48
+          Height = 56
+          Top = 224
+          Width = 288
+          Caption = 'Login'
+          Font.Height = -40
+          Font.Name = 'Sans'
+          OnClick = Login1Click
+          ParentFont = False
+          TabOrder = 2
+        end
+      end
+      object Label3: TLabel
+        AnchorSideLeft.Side = asrBottom
+        Left = 296
+        Height = 93
+        Top = 72
+        Width = 748
+        Caption = 'Rhino/AVS Test Rig'
+        Font.Height = -80
+        Font.Name = 'Sans'
+        ParentColor = False
+        ParentFont = False
+      end
+      object Label19: TLabel
+        Left = 600
+        Height = 15
+        Top = 528
+        Width = 122
+        Caption = 'Invalid login Details'
+        Font.Color = clRed
+        Font.Height = -13
+        Font.Name = 'Sans'
+        ParentColor = False
+        ParentFont = False
+        Visible = False
+      end
+    end
+    object Sheet_general: TTabSheet
+      Caption = 'General'
+      ClientHeight = 965
+      ClientWidth = 1270
+      object Label1: TLabel
+        Left = 0
+        Height = 21
+        Top = 352
+        Width = 107
+        Caption = 'System Up-time'
+        ParentColor = False
+      end
+      object Label2: TLabel
+        Left = 0
+        Height = 21
+        Top = 384
+        Width = 118
+        Caption = 'System Messages'
+        ParentColor = False
+      end
+      object Memo1: TMemo
+        Left = 0
+        Height = 481
+        Top = 407
+        Width = 1272
+        ReadOnly = True
+        TabOrder = 0
+      end
+      object DBGrid2: TDBGrid
+        Left = 0
+        Height = 332
+        Top = 8
+        Width = 1272
+        Color = clWindow
+        Columns = <>
+        DataSource = DataSource1
+        DefaultRowHeight = 20
+        Options = [dgTitles, dgIndicator, dgColumnResize, dgColumnMove, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgAlwaysShowSelection, dgConfirmDelete, dgCancelOnExit]
+        Scrollbars = ssVertical
+        TabOrder = 1
+        OnPrepareCanvas = DBGrid1PrepareCanvas
+      end
+    end
+    object Sheet_Create_program: TTabSheet
+      Hint = 'Design the program to do the test'
+      Caption = 'Create Program'
+      ClientHeight = 965
+      ClientWidth = 1270
+      ParentShowHint = False
+      TabVisible = False
+      object Panel2: TPanel
+        Left = 0
+        Height = 919
+        Top = 8
+        Width = 1272
+        BevelOuter = bvNone
+        ClientHeight = 919
+        ClientWidth = 1272
+        Font.Height = -13
+        Font.Name = 'Sans'
+        ParentFont = False
+        TabOrder = 0
+        object Memo2: TMemo
+          Left = 0
+          Height = 90
+          Hint = 'Information required are things like'#10'- What problem you are looking to investigate'#10'- How the test will do it'#10'- Who requested it'
+          Top = 32
+          Width = 1270
+          Lines.Strings = (
+            ''
+          )
+          ParentShowHint = False
+          ShowHint = True
+          TabOrder = 0
+        end
+        object Label4: TLabel
+          Left = 0
+          Height = 15
+          Top = 8
+          Width = 122
+          Caption = 'Reasons for testing'
+          ParentColor = False
+        end
+        object LabeledEdit1: TLabeledEdit
+          Left = 0
+          Height = 27
+          Hint = 'A simple description for the main page'
+          Top = 144
+          Width = 920
+          EditLabel.AnchorSideLeft.Control = LabeledEdit1
+          EditLabel.AnchorSideRight.Control = LabeledEdit1
+          EditLabel.AnchorSideRight.Side = asrBottom
+          EditLabel.AnchorSideBottom.Control = LabeledEdit1
+          EditLabel.Left = 0
+          EditLabel.Height = 15
+          EditLabel.Top = 126
+          EditLabel.Width = 920
+          EditLabel.Caption = 'Short Description of Testing'
+          EditLabel.ParentColor = False
+          ParentShowHint = False
+          ShowHint = True
+          TabOrder = 1
+        end
+        object Bay_select: TComboBox
+          Left = 920
+          Height = 33
+          Hint = 'This is the bay the step is attached to. '
+          Top = 144
+          Width = 126
+          ItemHeight = 0
+          Items.Strings = (
+            '1'
+            '2'
+            '3'
+            '4'
+            '5'
+            '6'
+            '7'
+            '8'
+            '9'
+            '10'
+            '11'
+            '12'
+            '13'
+            '14'
+            '15'
+            '16'
+          )
+          OnChange = Bay_selectChange
+          ParentShowHint = False
+          ShowHint = True
+          Style = csDropDownList
+          TabOrder = 2
+        end
+        object ComboBox2: TComboBox
+          Left = 0
+          Height = 33
+          Hint = 'This is the item you want to move e.g.'#10'- Motor'#10'- Ram'#10'- Output (for undefined items)'
+          Top = 576
+          Width = 128
+          ItemHeight = 0
+          ParentShowHint = False
+          ShowHint = True
+          Style = csDropDownList
+          TabOrder = 3
+        end
+        object ComboBox3: TComboBox
+          Left = 152
+          Height = 33
+          Hint = 'This is the direction you want the item to go'
+          Top = 576
+          Width = 128
+          ItemHeight = 0
+          Items.Strings = (
+            'In'
+            'Out'
+          )
+          ParentShowHint = False
+          ShowHint = True
+          Style = csDropDownList
+          TabOrder = 4
+        end
+        object End_trigger: TComboBox
+          Left = 304
+          Height = 33
+          Hint = 'This is the trigger condition which designates the end of the line e.g.'#10'- Time (move item for x seconds)'#10'- Switch (move item until switch is triggered)'
+          Top = 576
+          Width = 136
+          ItemHeight = 0
+          Items.Strings = (
+            'Time'
+          )
+          OnChange = End_triggerChange
+          ParentShowHint = False
+          ShowHint = True
+          Style = csDropDownList
+          TabOrder = 5
+        end
+        object ComboBox5: TComboBox
+          Left = 552
+          Height = 33
+          Hint = 'This is the trigger condition e.g.'#10'- Time (how many seconds to move)'#10'- Switch is it a switch on or off condition'
+          Top = 768
+          Width = 169
+          ItemHeight = 0
+          Items.Strings = (
+            'Active'
+            'Inactive'
+          )
+          ParentShowHint = False
+          ShowHint = True
+          Style = csDropDownList
+          TabOrder = 6
+          Visible = False
+        end
+        object CheckGroup1: TCheckGroup
+          Left = 1064
+          Height = 105
+          Hint = 'These are the data logging options. '#10'If you select one of these option then the raw data will be saved '#10'and will be available to the user.'#10'Any data not recorded will be discarded during the course of the test.'
+          Top = 136
+          Width = 194
+          AutoFill = True
+          Caption = 'Data Logging'
+          ChildSizing.LeftRightSpacing = 6
+          ChildSizing.TopBottomSpacing = 6
+          ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
+          ChildSizing.EnlargeVertical = crsHomogenousChildResize
+          ChildSizing.ShrinkHorizontal = crsScaleChilds
+          ChildSizing.ShrinkVertical = crsScaleChilds
+          ChildSizing.Layout = cclLeftToRightThenTopToBottom
+          ChildSizing.ControlsPerLine = 1
+          ClientHeight = 89
+          ClientWidth = 192
+          Items.Strings = (
+            'Cycle time'
+            'Temperature (N/A)'
+          )
+          ParentShowHint = False
+          ShowHint = True
+          TabOrder = 7
+          Visible = False
+          Data = {
+            020000000202
+          }
+        end
+        object Complete_button: TButton
+          Left = 232
+          Height = 25
+          Hint = 'Complete the program and send it to the database - This WILL NOT start the program running'
+          Top = 696
+          Width = 272
+          Caption = 'Complete Program'
+          Color = clMenu
+          Font.Height = -20
+          Font.Name = 'Sans'
+          OnClick = Complete_buttonClick
+          ParentFont = False
+          ParentShowHint = False
+          ShowHint = True
+          TabOrder = 8
+        end
+        object StringGrid2: TStringGrid
+          Left = 0
+          Height = 240
+          Hint = 'This is the program area - the lines are completed in sequence.'
+          Top = 264
+          Width = 650
+          ColCount = 4
+          DefaultColWidth = 161
+          DefaultRowHeight = 20
+          FixedCols = 0
+          Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goRangeSelect, goRowSelect, goSmoothScroll, goRowHighlight]
+          ParentShowHint = False
+          PopupMenu = Program_Popup
+          RowCount = 1
+          ShowHint = True
+          TabOrder = 9
+          TitleFont.Height = -13
+          TitleFont.Name = 'Sans'
+          Cells = (
+            4
+            0
+            0
+            'Target'
+            1
+            0
+            'Status'
+            2
+            0
+            'Trigger'
+            3
+            0
+            'Trigger status / Time'
+          )
+        end
+        object ADD_Program: TButton
+          Left = 232
+          Height = 25
+          Hint = 'Add the above line to the program after the last line.'
+          Top = 656
+          Width = 272
+          Caption = 'Add to Program'
+          Color = clMenu
+          Font.Height = -20
+          Font.Name = 'Sans'
+          OnClick = ADD_ProgramClick
+          ParentFont = False
+          ParentShowHint = False
+          ShowHint = True
+          TabOrder = 10
+        end
+        object WT_step: TLabeledEdit
+          Left = 0
+          Height = 27
+          Hint = 'Please use the full product code for the test unit e.g.- STEXE1200HL'
+          Top = 192
+          Width = 176
+          EditLabel.AnchorSideLeft.Control = WT_step
+          EditLabel.AnchorSideRight.Control = WT_step
+          EditLabel.AnchorSideRight.Side = asrBottom
+          EditLabel.AnchorSideBottom.Control = WT_step
+          EditLabel.Left = 0
+          EditLabel.Height = 15
+          EditLabel.Top = 174
+          EditLabel.Width = 176
+          EditLabel.Caption = 'What step is being used'
+          EditLabel.ParentColor = False
+          ParentShowHint = False
+          ShowHint = True
+          TabOrder = 11
+        end
+        object WT_motor: TLabeledEdit
+          Left = 192
+          Height = 27
+          Hint = 'Please use the part number and name for the motor e.g.'#10'- EC009 Daimler Motor'
+          Top = 192
+          Width = 176
+          EditLabel.AnchorSideLeft.Control = WT_motor
+          EditLabel.AnchorSideRight.Control = WT_motor
+          EditLabel.AnchorSideRight.Side = asrBottom
+          EditLabel.AnchorSideBottom.Control = WT_motor
+          EditLabel.Left = 192
+          EditLabel.Height = 15
+          EditLabel.Top = 174
+          EditLabel.Width = 176
+          EditLabel.Caption = 'What motor is being used'
+          EditLabel.ParentColor = False
+          ParentShowHint = False
+          ShowHint = True
+          TabOrder = 12
+        end
+        object Label5: TLabel
+          Left = 384
+          Height = 15
+          Top = 176
+          Width = 48
+          Caption = 'Voltage'
+          ParentColor = False
+          Visible = False
+        end
+        object FloatSpinEdit1: TFloatSpinEdit
+          Left = 384
+          Height = 27
+          Hint = 'THIS IS INFORMATION ONLY!!'#10'The controller does not maintain this voltage.'
+          Top = 192
+          Width = 120
+          Increment = 1
+          MaxValue = 100
+          MinValue = 0
+          ParentShowHint = False
+          ShowHint = True
+          TabOrder = 13
+          Value = 10
+          Visible = False
+        end
+        object Label6: TLabel
+          Left = 0
+          Height = 15
+          Top = 552
+          Width = 39
+          Caption = 'Target'
+          ParentColor = False
+        end
+        object Label7: TLabel
+          Left = 152
+          Height = 15
+          Top = 552
+          Width = 42
+          Caption = 'Status'
+          ParentColor = False
+        end
+        object Label8: TLabel
+          Left = 304
+          Height = 15
+          Top = 552
+          Width = 70
+          Caption = 'End Trigger'
+          ParentColor = False
+        end
+        object Label9: TLabel
+          Left = 462
+          Height = 15
+          Hint = 'This is the trigger condition for the end of line e.g.'#10'- Time how many seconds to move'#10'- Switch wheter to detect a switch on or switch off event'
+          Top = 552
+          Width = 52
+          Caption = 'Time (s)'
+          ParentColor = False
+          ParentShowHint = False
+          ShowHint = True
+        end
+        object Panel3: TPanel
+          Left = 744
+          Height = 183
+          Top = 288
+          Width = 134
+          BevelOuter = bvNone
+          ClientHeight = 183
+          ClientWidth = 134
+          TabOrder = 14
+          Visible = False
+          object SpinEdit4: TSpinEdit
+            Left = 8
+            Height = 27
+            Hint = 'This is the time the water pump will run for if left on 0 the pump will run continuosly'
+            Top = 72
+            Width = 122
+            MaxValue = 144000
+            ParentShowHint = False
+            ShowHint = True
+            TabOrder = 1
+          end
+          object SpinEdit5: TSpinEdit
+            Left = 8
+            Height = 27
+            Top = 128
+            Width = 122
+            MaxValue = 144000
+            TabOrder = 2
+          end
+          object Label10: TLabel
+            Left = 8
+            Height = 15
+            Top = 56
+            Width = 89
+            Caption = 'ON time (Min)'
+            ParentColor = False
+          end
+          object Label11: TLabel
+            Left = 8
+            Height = 15
+            Top = 112
+            Width = 93
+            Caption = 'OFF time (Min)'
+            ParentColor = False
+          end
+          object water: TCheckBox
+            Left = 8
+            Height = 23
+            Top = 24
+            Width = 106
+            AutoSize = False
+            Caption = 'Use water'
+            TabOrder = 0
+          end
+        end
+        object SpinEdit6: TSpinEdit
+          Left = 744
+          Height = 27
+          Hint = 'This is the target count, the program will stop when it reaches this count.'#10'The program can be stopped before the count by the user'
+          Top = 192
+          Width = 176
+          MaxValue = 100000000
+          ParentShowHint = False
+          ShowHint = True
+          TabOrder = 15
+          Value = 100
+        end
+        object Label12: TLabel
+          Left = 744
+          Height = 15
+          Top = 176
+          Width = 81
+          Caption = 'Target Count'
+          ParentColor = False
+        end
+        object WT_cont: TLabeledEdit
+          Left = 528
+          Height = 27
+          Hint = 'Please use the part number and name for the Controller e.g.'#10'- EC133 617 controller'
+          Top = 192
+          Width = 192
+          EditLabel.AnchorSideLeft.Control = WT_cont
+          EditLabel.AnchorSideRight.Control = WT_cont
+          EditLabel.AnchorSideRight.Side = asrBottom
+          EditLabel.AnchorSideBottom.Control = WT_cont
+          EditLabel.Left = 528
+          EditLabel.Height = 15
+          EditLabel.Top = 174
+          EditLabel.Width = 192
+          EditLabel.Caption = 'What Controller is being used'
+          EditLabel.ParentColor = False
+          ParentShowHint = False
+          ShowHint = True
+          TabOrder = 16
+        end
+        object GroupBox1: TGroupBox
+          Left = 968
+          Height = 152
+          Top = 256
+          Width = 290
+          Caption = 'Import Program'
+          ClientHeight = 136
+          ClientWidth = 288
+          TabOrder = 17
+          object Import: TButton
+            Left = 8
+            Height = 25
+            Top = 64
+            Width = 268
+            Caption = 'Import Another Program'
+            OnClick = ImportClick
+            TabOrder = 0
+          end
+          object LabeledEdit8: TLabeledEdit
+            Left = 8
+            Height = 27
+            Top = 27
+            Width = 264
+            EditLabel.AnchorSideLeft.Control = LabeledEdit8
+            EditLabel.AnchorSideRight.Control = LabeledEdit8
+            EditLabel.AnchorSideRight.Side = asrBottom
+            EditLabel.AnchorSideBottom.Control = LabeledEdit8
+            EditLabel.Left = 8
+            EditLabel.Height = 15
+            EditLabel.Top = 9
+            EditLabel.Width = 264
+            EditLabel.Caption = 'ID of program to import / update'
+            EditLabel.ParentColor = False
+            TabOrder = 1
+            OnKeyPress = LabeledEdit8KeyPress
+          end
+          object Import_up: TButton
+            Left = 8
+            Height = 25
+            Top = 99
+            Width = 268
+            Caption = 'Update a program'
+            OnClick = Import_upClick
+            TabOrder = 2
+          end
+        end
+        object Storage: TMemo
+          Left = 688
+          Height = 225
+          Top = 528
+          Width = 177
+          Lines.Strings = (
+            'Memo3'
+          )
+          TabOrder = 18
+        end
+        object Label18: TLabel
+          Left = 920
+          Height = 15
+          Top = 128
+          Width = 68
+          Caption = 'Select Bay'
+          ParentColor = False
+        end
+        object Memo5: TMemo
+          Left = 882
+          Height = 290
+          Top = 566
+          Width = 326
+          Lines.Strings = (
+            'Memo5'
+          )
+          TabOrder = 19
+          Visible = False
+        end
+        object CheckBox4: TCheckBox
+          Left = 752
+          Height = 23
+          Top = 264
+          Width = 102
+          AutoSize = False
+          Caption = 'Use ram '
+          TabOrder = 20
+        end
+        object FloatSpinEdit2: TFloatSpinEdit
+          Left = 462
+          Height = 27
+          Top = 572
+          Width = 162
+          Increment = 1
+          MaxValue = 100
+          MinValue = 0
+          TabOrder = 21
+          Value = 0
+        end
+        object Arrow1: TArrow
+          Left = 664
+          Height = 20
+          Top = 484
+          Width = 20
+          ArrowType = atDown
+          Constraints.MinHeight = 8
+          Constraints.MinWidth = 8
+          OnClick = MOve_downClick
+        end
+        object Arrow2: TArrow
+          Left = 664
+          Height = 20
+          Top = 451
+          Width = 20
+          ArrowType = atUp
+          Constraints.MinHeight = 8
+          Constraints.MinWidth = 8
+          OnClick = Move_upClick
+        end
+        object Button1: TButton
+          Left = 0
+          Height = 25
+          Top = 512
+          Width = 125
+          Caption = 'Edit Line'
+          TabOrder = 22
+        end
+      end
+    end
+    object Sheet_Programs: TTabSheet
+      Caption = 'Programs'
+      ClientHeight = 965
+      ClientWidth = 1270
+      TabVisible = False
+      object Program_catagory: TComboBox
+        Left = 0
+        Height = 33
+        Top = 376
+        Width = 184
+        ItemHeight = 0
+        ItemIndex = 0
+        Items.Strings = (
+          'New'
+          'Active'
+          'Paused'
+          'Completed'
+        )
+        OnChange = Program_catagoryChange
+        TabOrder = 0
+        Text = 'New'
+      end
+      object Label13: TLabel
+        Left = 0
+        Height = 21
+        Top = 352
+        Width = 87
+        Caption = 'Select status'
+        ParentColor = False
+      end
+      object DBGrid1: TDBGrid
+        Left = 0
+        Height = 324
+        Top = 8
+        Width = 1272
+        Color = clWindow
+        Columns = <>
+        Constraints.MinWidth = 500
+        DataSource = DataSource1
+        DefaultRowHeight = 20
+        FixedHotColor = cl3DDkShadow
+        Options = [dgTitles, dgIndicator, dgColumnResize, dgColumnMove, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgAlwaysShowSelection, dgConfirmDelete, dgCancelOnExit]
+        PopupMenu = Program_select_popup
+        Scrollbars = ssVertical
+        TabOrder = 1
+        OnCellClick = DBGrid1CellClick
+        OnPrepareCanvas = DBGrid1PrepareCanvas
+      end
+      object Memo4: TMemo
+        Left = 639
+        Height = 528
+        Top = 352
+        Width = 625
+        ReadOnly = True
+        TabOrder = 2
+      end
+      object ALL_Pause: TButton
+        Left = 0
+        Height = 25
+        Top = 856
+        Width = 632
+        Caption = 'Pause All'
+        OnClick = ALL_PauseClick
+        TabOrder = 3
+      end
+    end
+    object Sheet_configure_rig: TTabSheet
+      Caption = 'Configure Rig'
+      ClientHeight = 965
+      ClientWidth = 1270
+      TabVisible = False
+      object ComboBox8: TComboBox
+        Left = 72
+        Height = 33
+        Top = 104
+        Width = 96
+        ItemHeight = 0
+        ItemIndex = 0
+        Items.Strings = (
+          '1'
+          '2'
+          '3'
+          '4'
+          '5'
+          '6'
+          '7'
+          '8'
+        )
+        TabOrder = 0
+        Text = '1'
+      end
+      object Label15: TLabel
+        Left = 72
+        Height = 21
+        Top = 80
+        Width = 24
+        Caption = 'Bus'
+        ParentColor = False
+      end
+      object ComboBox9: TComboBox
+        Left = 216
+        Height = 33
+        Top = 104
+        Width = 96
+        ItemHeight = 0
+        ItemIndex = 0
+        Items.Strings = (
+          '1'
+          '2'
+          '3'
+          '4'
+          '5'
+          '6'
+          '7'
+          '8'
+          '9'
+          '10'
+          '11'
+          '12'
+          '13'
+          '14'
+          '15'
+          '16'
+        )
+        TabOrder = 1
+        Text = '1'
+      end
+      object Label16: TLabel
+        Left = 216
+        Height = 21
+        Top = 80
+        Width = 20
+        Caption = 'Pin'
+        ParentColor = False
+      end
+      object RC_pin_dir: TComboBox
+        Left = 360
+        Height = 33
+        Top = 104
+        Width = 96
+        ItemHeight = 0
+        ItemIndex = 0
+        Items.Strings = (
+          'Input'
+          'Output'
+        )
+        OnChange = RC_pin_dirChange
+        TabOrder = 2
+        Text = 'Input'
+      end
+      object Label17: TLabel
+        Left = 360
+        Height = 21
+        Top = 80
+        Width = 58
+        Caption = 'Direction'
+        ParentColor = False
+      end
+      object CReate_pin: TButton
+        Left = 72
+        Height = 25
+        Top = 256
+        Width = 131
+        Caption = 'Update Pin'
+        OnClick = CReate_pinClick
+        TabOrder = 3
+      end
+      object Button4: TButton
+        Left = 72
+        Height = 25
+        Top = 528
+        Width = 131
+        Caption = 'Assign to bay'
+        OnClick = Button4Click
+        TabOrder = 4
+      end
+      object ComboBox7: TComboBox
+        Left = 72
+        Height = 33
+        Top = 480
+        Width = 100
+        ItemHeight = 0
+        ItemIndex = 0
+        Items.Strings = (
+          '1'
+          '2'
+          '3'
+          '4'
+          '5'
+          '6'
+          '7'
+          '8'
+          '9'
+          '10'
+          '11'
+          '12'
+          '13'
+          '14'
+          '15'
+          '16'
+        )
+        TabOrder = 5
+        Text = '1'
+      end
+      object Label14: TLabel
+        Left = 72
+        Height = 21
+        Top = 456
+        Width = 24
+        Caption = 'Bay'
+        ParentColor = False
+      end
+      object DBGrid3: TDBGrid
+        Left = 504
+        Height = 863
+        Top = 0
+        Width = 774
+        Color = clWindow
+        Columns = <>
+        DataSource = DataSource1
+        DefaultRowHeight = 20
+        Options = [dgTitles, dgIndicator, dgColumnResize, dgColumnMove, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgAlwaysShowSelection, dgConfirmDelete, dgCancelOnExit]
+        TabOrder = 6
+        OnCellClick = DBGrid3CellClick
+        OnPrepareCanvas = DBGrid1PrepareCanvas
+      end
+      object LabeledEdit5: TLabeledEdit
+        Left = 72
+        Height = 33
+        Top = 200
+        Width = 384
+        EditLabel.AnchorSideLeft.Control = LabeledEdit5
+        EditLabel.AnchorSideRight.Control = LabeledEdit5
+        EditLabel.AnchorSideRight.Side = asrBottom
+        EditLabel.AnchorSideBottom.Control = LabeledEdit5
+        EditLabel.Left = 72
+        EditLabel.Height = 21
+        EditLabel.Top = 176
+        EditLabel.Width = 384
+        EditLabel.Caption = 'Alias'
+        EditLabel.ParentColor = False
+        TabOrder = 7
+      end
+    end
+    object Sheet_ADMIN: TTabSheet
+      Caption = 'Admin'
+      ClientHeight = 965
+      ClientWidth = 1270
+      Enabled = False
+      TabVisible = False
+      object LabeledEdit6: TLabeledEdit
+        Left = 40
+        Height = 33
+        Top = 40
+        Width = 220
+        EditLabel.AnchorSideLeft.Control = LabeledEdit6
+        EditLabel.AnchorSideRight.Control = LabeledEdit6
+        EditLabel.AnchorSideRight.Side = asrBottom
+        EditLabel.AnchorSideBottom.Control = LabeledEdit6
+        EditLabel.Left = 40
+        EditLabel.Height = 21
+        EditLabel.Top = 16
+        EditLabel.Width = 220
+        EditLabel.Caption = 'Username'
+        EditLabel.ParentColor = False
+        TabOrder = 0
+      end
+      object LabeledEdit7: TLabeledEdit
+        Left = 40
+        Height = 33
+        Top = 96
+        Width = 220
+        EchoMode = emPassword
+        EditLabel.AnchorSideLeft.Control = LabeledEdit7
+        EditLabel.AnchorSideRight.Control = LabeledEdit7
+        EditLabel.AnchorSideRight.Side = asrBottom
+        EditLabel.AnchorSideBottom.Control = LabeledEdit7
+        EditLabel.Left = 40
+        EditLabel.Height = 21
+        EditLabel.Top = 72
+        EditLabel.Width = 220
+        EditLabel.Caption = 'Password'
+        EditLabel.ParentColor = False
+        PasswordChar = '*'
+        TabOrder = 1
+      end
+      object CheckGroup2: TCheckGroup
+        Left = 624
+        Height = 322
+        Top = 0
+        Width = 334
+        AutoFill = True
+        Caption = 'Permissions'
+        ChildSizing.LeftRightSpacing = 6
+        ChildSizing.TopBottomSpacing = 6
+        ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
+        ChildSizing.EnlargeVertical = crsHomogenousChildResize
+        ChildSizing.ShrinkHorizontal = crsScaleChilds
+        ChildSizing.ShrinkVertical = crsScaleChilds
+        ChildSizing.Layout = cclLeftToRightThenTopToBottom
+        ChildSizing.ControlsPerLine = 1
+        ClientHeight = 300
+        ClientWidth = 332
+        Items.Strings = (
+          'Create Program'
+          'Alter Program'
+          'Configure Rig'
+          'Change Other User Password'
+          'Alter Permissions'
+          'Change Own Password'
+          'Download Database'
+        )
+        TabOrder = 2
+        Data = {
+          0700000002020202020202
+        }
+      end
+      object Button5: TButton
+        Left = 40
+        Height = 25
+        Top = 192
+        Width = 220
+        Caption = 'Add or Update User'
+        TabOrder = 3
+      end
+      object StringGrid5: TStringGrid
+        Left = 8
+        Height = 215
+        Top = 344
+        Width = 1252
+        TabOrder = 4
+      end
+    end
+  end
+  object MainMenu1: TMainMenu
+    left = 392
+    top = 864
+    object File_sys: TMenuItem
+      Caption = 'File'
+      object close1: TMenuItem
+        Caption = 'Close'
+        OnClick = close1Click
+      end
+    end
+    object MenuItem4: TMenuItem
+      Caption = 'Hide'
+      Visible = False
+      object hide_1: TMenuItem
+        Caption = 'For 1 Minute'
+        OnClick = hide_1Click
+      end
+      object hide_5: TMenuItem
+        Caption = 'For 5 Minutes'
+        OnClick = hide_5Click
+      end
+      object hide_10: TMenuItem
+        Caption = 'For 10 Minutes'
+        OnClick = hide_10Click
+      end
+      object hide_30: TMenuItem
+        Caption = 'For 30 Minutes'
+        OnClick = hide_30Click
+      end
+    end
+    object Admin: TMenuItem
+      Caption = 'Admin'
+      Visible = False
+      object Ch_pwd: TMenuItem
+        Caption = 'Change password'
+        OnClick = Ch_pwdClick
+      end
+    end
+  end
+  object Program_Popup: TPopupMenu
+    left = 336
+    top = 390
+    object remove_line: TMenuItem
+      Caption = 'Delete Line'
+      OnClick = remove_lineClick
+    end
+    object MOve_down: TMenuItem
+      Caption = 'Move Line Down'
+      OnClick = MOve_downClick
+    end
+    object Move_up: TMenuItem
+      Caption = 'Move Line UP'
+      Default = True
+      OnClick = Move_upClick
+    end
+  end
+  object SQLQuery1: TSQLQuery
+    FieldDefs = <    
+      item
+        Name = 'Username'
+        DataType = ftMemo
+        Precision = -1
+        Size = 0
+      end    
+      item
+        Name = 'Password'
+        DataType = ftMemo
+        Precision = -1
+        Size = 0
+      end    
+      item
+        Name = 'Permissions'
+        DataType = ftInteger
+        Precision = -1
+        Size = 0
+      end>
+    AfterPost = apply_update
+    Database = SQLite3Connection1
+    Transaction = SQLTransaction1
+    SQL.Strings = (
+      'select * from users'
+    )
+    Params = <>
+    UpdateMode = upWhereChanged
+    left = 64
+    top = 872
+  end
+  object DataSource1: TDataSource
+    DataSet = SQLQuery1
+    left = 104
+    top = 872
+  end
+  object SQLite3Connection1: TSQLite3Connection
+    Connected = False
+    LoginPrompt = False
+    KeepConnection = False
+    Transaction = SQLTransaction1
+    LogEvents = []
+    Options = []
+    left = 24
+    top = 872
+  end
+  object SQLTransaction1: TSQLTransaction
+    Active = False
+    Database = SQLite3Connection1
+    left = 136
+    top = 872
+  end
+  object Program_select_popup: TPopupMenu
+    left = 296
+    top = 390
+    object Activate_program: TMenuItem
+      Caption = 'Activate'
+      OnClick = Activate_programClick
+    end
+    object Suspend_program: TMenuItem
+      Caption = 'Suspend'
+      OnClick = Suspend_programClick
+    end
+    object Complete_test: TMenuItem
+      Caption = 'Complete'
+      OnClick = Complete_testClick
+    end
+    object MenuItem1: TMenuItem
+      Caption = 'Reports'
+      Visible = False
+      object MenuItem2: TMenuItem
+        Caption = 'Full Report'
+      end
+      object MenuItem3: TMenuItem
+        Caption = 'Basic Report'
+      end
+    end
+  end
+  object God_timer: TTimer
+    OnTimer = God_timerTimer
+    left = 256
+    top = 390
+  end
+  object Timer3: TTimer
+    Interval = 10000
+    OnTimer = Timer3Timer
+    left = 216
+    top = 390
+  end
+  object Hidetimer: TTimer
+    Enabled = False
+    OnTimer = HidetimerTimer
+    left = 432
+    top = 390
+  end
+  object IdleTimer1: TIdleTimer
+    AutoEnabled = True
+    Interval = 300000
+    OnTimer = IdleTimer1Timer
+    left = 392
+    top = 390
+  end
+end

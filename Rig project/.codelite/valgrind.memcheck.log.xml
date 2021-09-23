@@ -1,0 +1,102 @@
+<?xml version="1.0"?>
+
+<valgrindoutput>
+
+<protocolversion>4</protocolversion>
+<protocoltool>memcheck</protocoltool>
+
+<preamble>
+  <line>Memcheck, a memory error detector</line>
+  <line>Copyright (C) 2002-2013, and GNU GPL'd, by Julian Seward et al.</line>
+  <line>Using Valgrind-3.10.0 and LibVEX; rerun with -h for copyright info</line>
+  <line>Command: ./Controller</line>
+</preamble>
+
+<pid>3966</pid>
+<ppid>3564</ppid>
+<tool>memcheck</tool>
+
+<args>
+  <vargv>
+    <exe>/usr/bin/valgrind.bin</exe>
+    <arg>--tool=memcheck</arg>
+    <arg>--xml=yes</arg>
+    <arg>--fullpath-after=</arg>
+    <arg>--gen-suppressions=all</arg>
+    <arg>--xml-file=/home/aron/Desktop/Test_area/Rig project/.codelite/valgrind.memcheck.log.xml</arg>
+    <arg>--suppressions=/home/aron/Desktop/Test_area/Rig project/.codelite/valgrind.memcheck.supp</arg>
+    <arg>--leak-check=yes</arg>
+    <arg>--track-origins=yes</arg>
+  </vargv>
+  <argv>
+    <exe>./Controller</exe>
+  </argv>
+</args>
+
+<status>
+  <state>RUNNING</state>
+  <time>00:00:00:00.398 </time>
+</status>
+
+<error>
+  <unique>0x0</unique>
+  <tid>1</tid>
+  <kind>SyscallParam</kind>
+  <what>Syscall param access(pathname) points to unaddressable byte(s)</what>
+  <stack>
+    <frame>
+      <ip>0x436FE16</ip>
+      <obj>/lib/i386-linux-gnu/i686/cmov/libc-2.19.so</obj>
+      <fn>access</fn>
+      <dir>/build/glibc-PNN5fi/glibc-2.19/io/../sysdeps/unix</dir>
+      <file>syscall-template.S</file>
+      <line>81</line>
+    </frame>
+    <frame>
+      <ip>0x8048B93</ip>
+      <obj>/home/aron/Desktop/Test_area/Rig project/Controller/Debug/Controller</obj>
+      <fn>main</fn>
+      <dir>/home/aron/Desktop/Test_area/Rig project/Controller</dir>
+      <file>main.c</file>
+      <line>39</line>
+    </frame>
+  </stack>
+  <auxwhat>Address 0x0 is not stack'd, malloc'd or (recently) free'd</auxwhat>
+  <suppression>
+    <sname>insert_a_suppression_name_here</sname>
+    <skind>Memcheck:Param</skind>
+    <skaux>access(pathname)</skaux>
+    <sframe> <fun>access</fun> </sframe>
+    <sframe> <fun>main</fun> </sframe>
+    <rawtext>
+<![CDATA[
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Param
+   access(pathname)
+   fun:access
+   fun:main
+}
+]]>
+    </rawtext>
+  </suppression>
+</error>
+
+
+<status>
+  <state>FINISHED</state>
+  <time>00:00:00:00.987 </time>
+</status>
+
+<errorcounts>
+  <pair>
+    <count>1</count>
+    <unique>0x0</unique>
+  </pair>
+</errorcounts>
+
+<suppcounts>
+</suppcounts>
+
+</valgrindoutput>
+

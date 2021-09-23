@@ -1,0 +1,17 @@
+[{
+  "file": "/home/aron/Desktop/Test_area/FiFo/fifo/Producer/main.c",
+  "directory": "/home/aron/Desktop/Test_area/FiFo/fifo/Producer",
+  "command": "/usr/bin/gcc-4.8  -c /home/aron/Desktop/Test_area/FiFo/fifo/Producer/main.c -o /home/aron/Desktop/Test_area/FiFo/fifo/Producer/main.c.o  -g  -O0  -Wall -I. -I."
+ }, {
+  "file": "/home/aron/Desktop/Test_area/FiFo/fifo/consumer/main.c",
+  "directory": "/home/aron/Desktop/Test_area/FiFo/fifo/consumer",
+  "command": "/usr/bin/gcc-4.8  -c /home/aron/Desktop/Test_area/FiFo/fifo/consumer/main.c -o /home/aron/Desktop/Test_area/FiFo/fifo/consumer/main.c.o  -g  -O0  -Wall -I. -I."
+ }, {
+  "file": "/home/aron/Desktop/Test_area/FiFo/fifo/consumer/Helpers.c",
+  "directory": "/home/aron/Desktop/Test_area/FiFo/fifo/consumer",
+  "command": "/usr/bin/gcc-4.8  -c /home/aron/Desktop/Test_area/FiFo/fifo/consumer/Helpers.c -o /home/aron/Desktop/Test_area/FiFo/fifo/consumer/Helpers.c.o  -g  -O0  -Wall -I. -I."
+ }, {
+  "file": "/home/aron/Desktop/Test_area/FiFo/fifo/consumer/ABE_IoPi.c",
+  "directory": "/home/aron/Desktop/Test_area/FiFo/fifo/consumer",
+  "command": "/usr/bin/gcc-4.8  -c /home/aron/Desktop/Test_area/FiFo/fifo/consumer/ABE_IoPi.c -o /home/aron/Desktop/Test_area/FiFo/fifo/consumer/ABE_IoPi.c.o  -g  -O0  -Wall -I. -I."
+ }]
