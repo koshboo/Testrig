@@ -1,33 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Session Name="/home/aron/Desktop/Test_area/Rig project/Rig project.workspace">
-  <int Value="0" Name="m_selectedTab"/>
+  <int Value="1" Name="m_selectedTab"/>
   <wxString Value="/home/aron/Desktop/Test_area/Rig project/Rig project.workspace" Name="m_workspaceName"/>
   <TabInfoArray Name="TabInfoArray">
     <TabInfo>
       <wxString Value="/home/aron/Desktop/Test_area/Rig project/Controller/main.c" Name="FileName"/>
-      <int Value="36" Name="FirstVisibleLine"/>
-      <int Value="34" Name="CurrentLine"/>
+      <int Value="79" Name="FirstVisibleLine"/>
+      <int Value="77" Name="CurrentLine"/>
       <wxArrayString Name="Bookmarks"/>
-      <IntVector Name="CollapsedFolds"/>
+      <IntVector Name="CollapsedFolds">
+        <IntVectorItem Value="29"/>
+        <IntVectorItem Value="241"/>
+        <IntVectorItem Value="260"/>
+      </IntVector>
     </TabInfo>
     <TabInfo>
-      <wxString Value="/home/aron/Desktop/Test_area/LIBS/Helpers.c" Name="FileName"/>
-      <int Value="63" Name="FirstVisibleLine"/>
-      <int Value="64" Name="CurrentLine"/>
-      <wxArrayString Name="Bookmarks"/>
-      <IntVector Name="CollapsedFolds"/>
-    </TabInfo>
-    <TabInfo>
-      <wxString Value="/home/aron/Desktop/Test_area/LIBS/Core.c" Name="FileName"/>
-      <int Value="0" Name="FirstVisibleLine"/>
-      <int Value="0" Name="CurrentLine"/>
-      <wxArrayString Name="Bookmarks"/>
-      <IntVector Name="CollapsedFolds"/>
-    </TabInfo>
-    <TabInfo>
-      <wxString Value="/home/aron/Desktop/Test_area/LIBS/Helpers.h" Name="FileName"/>
-      <int Value="0" Name="FirstVisibleLine"/>
-      <int Value="0" Name="CurrentLine"/>
+      <wxString Value="/home/aron/Desktop/Test_area/FiFo/fifo/consumer/main.c" Name="FileName"/>
+      <int Value="97" Name="FirstVisibleLine"/>
+      <int Value="95" Name="CurrentLine"/>
       <wxArrayString Name="Bookmarks"/>
       <IntVector Name="CollapsedFolds"/>
     </TabInfo>

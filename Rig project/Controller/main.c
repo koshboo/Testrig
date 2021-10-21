@@ -24,28 +24,36 @@ char *err_msg = 0;
 char temp[100];
 char stata ;
 int target;
-
-time_t oldtime,newtime,regtime,tartime;
+int sig;
+int  L_Number;
+time_t oldtime,newtime,regtime,tartime,aron_time;
+struct timespec tim,tim2;
 struct sqlret {
 	char sqlret[200];
 	int sqlline;
 } sqlret;
 void SIG_OK (int signum)
 {
-	printf ("Sig captured abc %d ",signum);			// Log start time
-	fflush (stdout);
+	sig = 1;
+	L_Number ++;											// increment line number
+}
+void SIG_NOK (int signum)
+{
+
+	sig = 2;
 }
 int main(int argc, char **argv)
 {
 
-signal(SIGINT,SIG_OK);
+	signal(SIGINT,SIG_OK);		// redirect sig int to my
+	signal(SIGUSR1,SIG_NOK);		// redirect sig int to my
 	char arr[25];
-	char arr2[25];
+
 	int Cfile1;
-	int Cfile2;
+
 	char Program_Lines[MAXLINE][20];
 	int  PL_Number;
-	int  L_Number;
+
 	int cmd_num;
 	char line [MAXLINE];
 	char *token ;
@@ -69,12 +77,12 @@ signal(SIGINT,SIG_OK);
 	strcpy(file_location,"Programs/Logs/");
 	strcat(file_location,argv[1]);									// copy The file name totemporary variable
 	strcat(file_location,".log");									// Add .log to the filename for the logging
-	//freopen(file_location,"a", stdout );							// Redirect all logging output to file
+	freopen(file_location,"a", stdout );							// Redirect all logging output to file
 
 	count = 0;
 	target = 0;
 	char  myfifo[30] ;
-	char  myfifo2[30] ;
+
 
 	//SQLITE
 	/*  Open SQLITE3 database
@@ -115,16 +123,15 @@ signal(SIGINT,SIG_OK);
 		time(&regtime);													// get time for use in the sql update sequence
 	}
 
+	sprintf(myfifo,"pipes/to_DEC.%s",argv[1]);							// Name of the the out bound pipe
+	if (access (myfifo,F_OK)== 0) {										// does myfifo exist - process killed not shut down properly
+		remove (myfifo);												// remove the old file
+		sleep (3);														// sleep to allow the remaoval
 
-
-	sprintf(myfifo,"pipes/to_DEC.%s",argv[1]);				// Name of the the out bound pipe
-	sprintf(myfifo2,"pipes/from_DEC.%s",argv[1]);			// Name of the inbound pipe
-	Cfile1 = open (myfifo, O_RDWR|O_NONBLOCK);
-	Cfile2 = open (myfifo2,O_RDONLY);						// open second fifo
-	read (Cfile2,arr,strlen(arr)+1);						// read and discard any ack /redo signals still in the pipe
+	}
 	/* MAIN PROGRAM LOOP*/
 	while ( stata == 0 ) {						   				// loop until the count = target count
-		fflush(stdout);
+
 		sprintf (temp,"SELECT Status FROM Programs where ID = %s",argv[1]); // form the sql query
 		sql = (temp); 												// copy query into the correct format
 		writeDB(sql);												// open DB Process query and close.
@@ -136,6 +143,18 @@ signal(SIGINT,SIG_OK);
 		time(&oldtime);												// start time for cycle timing
 
 		while (L_Number <= PL_Number) {						// while line number is lower than program lines
+			mkfifo (myfifo,0666);							// create the fifo file
+			errno = 0;										// clear the error code
+			Cfile1 = open (myfifo, O_RDWR);					// open the fifo
+			while (errno != 0 ) {							// did it open correctly if not loop
+				tim.tv_nsec = 1000000;						// set tim to 10 millisecond
+				nanosleep (&tim,&tim2);						// sleep for tim
+				fprintf(stderr,"Error - %d === %s \n",errno,strerror (errno)); // print error to error log
+				Cfile1 = open (myfifo, O_RDWR);				// try to reopen the fifo file.
+			}
+			if (L_Number <0) {								// has the line number been set to < 0
+				L_Number = 0;								// set linenumber to 0
+			}
 			cmd_num = 0;									// zero commands
 			strcpy(line,Program_Lines[L_Number]);			// copy the program line in to a temporay variable
 			token = strtok(line,",");						// Split line into parts
@@ -155,32 +174,38 @@ signal(SIGINT,SIG_OK);
 				* This is if the program is set for Timed mode
 				*/
 
-				sprintf(arr,"%s %s %s",cmd[0],cmd[1],cmd[3]);			// create the command for the fifo buffer
-/// Write data to the pipe
-				arr[strlen(arr)] = 0;
+				sprintf(arr,"%i %s %s %s",getpid(),cmd[0],cmd[1],cmd[3]);			// create the command for the fifo buffer
+				/// Write data to the pipe
+				arr[strlen(arr)] = 0;									// add zero term to array
 				tt = write (Cfile1,arr,strlen(arr)+1);					// write command to pipe
 				while (tt < 0 ) {										// was there an error
 					sleep (1);											// wait 1 second
 					tt = write (Cfile1,arr,strlen(arr)+1);				// retry after 1 second
 				}
 
+// wait for signal
+				sig = 0;												// reset the signal flag
+				while (sig == 0 ) {										// while the signal flag is 0 loop
+					usleep (1000);										// sleep for 1 second
 
-// read data from the pipe
-				do {													// repeat
-					arr[0] = 0;
-					tt = read (Cfile2,arr2,20);							// read the ack or estop
-				} while (tt == 0);										// while no data sent
-// validate data and act accordingly
+				}
+				close (Cfile1);											// close the fifo file
+				remove (myfifo);										// delete fifo file to tell DEC no other meassages
+				float f = atof (cmd[4]);								// convert cmd[4] to float
+				f = f * 1000000000;										// times second by 1,000,000,000 to get nanoseconds
+				unsigned long long int s = f;							// convert float to long long iunsigned int
+				while (s > 0) {											// loop while s > 0
+					if (s > 100000000) {								// is s > 1 second
+						tim.tv_nsec = 100000000;						// set tim to 1 second
+						s = s - 100000000;								// take 1 second off s.
+					} else {
+						tim.tv_nsec = s;								// set tim to s
+						s = 0;
+					}
+					nanosleep (&tim,&tim2);								// sleep for tim
+				}
 
-				switch (arr2[0]) {							// convert arr to int
-				case 0x01: // ACK - ok proceed
-					L_Number ++;
-					sleep (strtol (cmd[4],NULL,10));									// add to line number
-					break;
-				case 0x02: // Redo - something happened please resend
-					break;												// no comands needed as Lnumber does not need changing
 
-				} // end of inner switch statement
 
 			}
 			break;													// end of timed section
@@ -199,9 +224,9 @@ signal(SIGINT,SIG_OK);
 
 			default:
 				fprintf(stderr,"%s Line fault on line %i \n",get_time(),L_Number+1);				// This should only happen if a line has an error
-				L_Number = L_Number ;
 			}
 		}// end of first switch statement
+
 		time(&newtime);
 		seconds = difftime(newtime,regtime); // how long since the last update to the sql database
 

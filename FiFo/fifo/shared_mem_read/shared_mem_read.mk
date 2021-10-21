@@ -5,7 +5,7 @@
 ## Debug
 ProjectName            :=shared_mem_read
 ConfigurationName      :=Debug
-WorkspacePath          := "/home/aron/Desktop/Test_area/FiFo/fifo"
+WorkspacePath          := "/home/aron/Desktop/Test_area/Rig project"
 ProjectPath            := "/home/aron/Desktop/Test_area/FiFo/fifo/shared_mem_read"
 IntermediateDirectory  :=./Debug
 OutDir                 := $(IntermediateDirectory)
@@ -13,7 +13,7 @@ CurrentFileName        :=
 CurrentFilePath        :=
 CurrentFileFullPath    :=
 User                   :=Aron Jones
-Date                   :=09/22/21
+Date                   :=10/21/21
 CodeLitePath           :="/home/aron/.codelite"
 LinkerName             :=/usr/bin/g++-4.8 
 SharedObjectLinkerName :=/usr/bin/g++-4.8 -shared -fPIC
@@ -104,6 +104,6 @@ clean:
 	$(RM) ./Debug/*$(ObjectSuffix)
 	$(RM) ./Debug/*$(DependSuffix)
 	$(RM) $(OutputFile)
-	$(RM) "../.build-debug/shared_mem_read"
+	$(RM) "../../../Rig project/.build-debug/shared_mem_read"
 
 

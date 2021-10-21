@@ -4,23 +4,27 @@
   <Environment>
     <![CDATA[]]>
   </Environment>
-  <Project Name="Controller" Path="Controller/Controller.project" Active="Yes"/>
+  <Project Name="Controller" Path="Controller/Controller.project" Active="No"/>
   <Project Name="shared_mem_read" Path="../FiFo/fifo/shared_mem_read/shared_mem_read.project" Active="No"/>
+  <Project Name="consumer" Path="../FiFo/fifo/consumer/consumer.project" Active="Yes"/>
   <BuildMatrix>
     <WorkspaceConfiguration Name="Debug" Selected="yes">
       <Project Name="God" ConfigName="Debug"/>
       <Project Name="Controller" ConfigName="Debug"/>
       <Project Name="shared_mem_read" ConfigName="Debug"/>
+      <Project Name="consumer" ConfigName="Debug"/>
     </WorkspaceConfiguration>
     <WorkspaceConfiguration Name="Release" Selected="yes">
       <Project Name="God" ConfigName="Release"/>
       <Project Name="Controller" ConfigName="Release"/>
       <Project Name="shared_mem_read" ConfigName="Release"/>
+      <Project Name="consumer" ConfigName="Release"/>
     </WorkspaceConfiguration>
     <WorkspaceConfiguration Name="Alpha" Selected="yes">
       <Project Name="God" ConfigName="Debug"/>
       <Project Name="Controller" ConfigName="Debug"/>
       <Project Name="shared_mem_read" ConfigName="Debug"/>
+      <Project Name="consumer" ConfigName="Debug"/>
     </WorkspaceConfiguration>
   </BuildMatrix>
 </CodeLite_Workspace>

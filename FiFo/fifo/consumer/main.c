@@ -14,12 +14,11 @@
 #include <signal.h>
 #include <time.h>
 
-#define REDO 0x02
-#define ACK  0x01
 
+#define clearscr() printf("\033c")
 int Callback(void *a_param, int argc, char **argv, char **column);
 int Csqlop (char* sql);
-
+char *ch;
 int 	targets [100];
 int 	targets2 [100] = {-1};
 char 	ch_arr[20][3];
@@ -31,6 +30,8 @@ char* 	RESPONSE;
 char 	temp[100];
 double seconds;
 time_t Crefresh_time,Current_time;
+int cl;
+char temp1[20];
 
 int main(int argc, char **argv)
 {
@@ -41,7 +42,7 @@ int main(int argc, char **argv)
 		i = atoi(RESPONSE);													// if reply is not null then convert to integer
 		if (i != 0 ) {														// Check if convertion worked
 			if (kill (i,0) == 0) {
-				exit (0);   												// If god is active then end this program
+				exit (0);   												// If dec is active then end this program
 			}
 		}
 	}
@@ -52,14 +53,12 @@ int main(int argc, char **argv)
 	IOPI_init(0x26,1);
 	IOPI_init(0x20,1);
 	char name [] = "fifo";
-	strcpy(name,"Con");									// copy The file name to temporary variable
-	strcat(name,".err");								// Add .err to the filename for the error log
-	freopen( name, "a", stdout );
+	strcpy(name,"DEC");									// copy The file name to temporary variable
+	strcat(name,".LOG");								// Add .err to the filename for the error log
+	//freopen( name, "a", stdout );
 	char Temp_Arry[50];									// temprary array for multiple things
 	char pipein  [30][30];								// reader pipe text name
-	char pipeout [30][30];								// Writer pipe
 	int F_HANDR [30] = {-1};							// reader file handles
-	int F_HANDW [30] = {-1};							// writer file handles
 	tag_count = 0;
 	int tt;
 	openDB();
@@ -70,59 +69,63 @@ int main(int argc, char **argv)
 	closeDB();
 	for (i = 0; i < tag_count ; i++) {
 		errno = 0;
-		sprintf(pipein[i] ,"pipes/to_DEC.%d",targets[i]);							// set file names for the pipes
-		printf("Creating  in pipe  %s \n",pipein[i]);
-				fflush (stdout);
-		sprintf(pipeout[i],"pipes/from_DEC.%d",targets[i]);
-		printf("Creating out pipe  %s \n",pipeout[i]);
-				fflush (stdout);
-		if (access (pipein[i],F_OK)!= 0) {
-			mkfifo (pipein [i],0666);
+		sprintf(pipein[i] ,"pipes/to_DEC.%d",targets[i]);				// set file names for the pipes
+		if (access (pipein[i],F_OK)== 0) {								// does a file exist for this process
+			F_HANDR[i] = open (pipein[i],O_RDONLY|O_NONBLOCK);			// open first fifo
+			Temp_Arry[0] = 0;											// empty the temp arry
+			tt = read (F_HANDR[i],Temp_Arry,50);						// empty the pipe (read all that is in there)
+			ch = strtok(Temp_Arry, ",");								// remove the first data point and store in ch
+			close (F_HANDR[i]);											// close handle
+			if (ch != NULL) {											// was the process id found?
+				kill (atoi (ch),SIGUSR1);										// send NOK signal to make the program repeat last statement
+			}
+
 		}
-		if (access (pipeout[i],F_OK)!= 0) {
-			mkfifo (pipeout[i],0666);
-		}
-		F_HANDR[i] = open (pipein[i],O_RDONLY|O_NONBLOCK);				// open first fifo
-		F_HANDW[i] = open (pipeout[i],O_RDWR|O_NONBLOCK );				// open second fifo
-		fflush (stdout);
-		Temp_Arry[0] = 0;
-		tt = 0;
-		tt = read (F_HANDR[i],Temp_Arry,50);									// empty the pipe (read all that is in there)
-		OP[0] = REDO;
-		write (F_HANDW[i],&OP,1);										// Write REDO to pipe
+
 	}
+
 	sleep (1);
 	time (&Crefresh_time);
 	while (1) {
-
+		clearscr();
 		for (i = 0; i < tag_count  ; i++) {								// Loop through all numbers
 			strcpy (Temp_Arry,"");
 			tt = 0;
 			if (access (pipein[i],F_OK)== 0) {
-				tt = read (F_HANDR[i],Temp_Arry,50);				// empty the pipe (read all that is in there)
-			}
-			
+				F_HANDR[i] = open (pipein[i],O_RDONLY|O_NONBLOCK);		// open first fifo
+				tt = read (F_HANDR[i],Temp_Arry,50);					// empty the pipe (read all that is in there)
 
-			if (tt > 1) {
-				printf("Array %d = %s  read = %d bytes \n",targets[i],Temp_Arry,tt);
-				fflush (stdout);
-				OP[0] = ACK;
-				OP[1] = 0;
-				int tem = access (pipeout[i],F_OK);
-				if (tem == 0) {
-					tt = write (F_HANDW[i],OP,10);
-					if (tt < 1 ) {
-						printf("err %d ",errno);
+				if (tt > 1) {											// did we rea more than 1 byte
+					ch = strtok(Temp_Arry, ",");						// split off the PID of the sender
+					if (ch != NULL) {									// was the pid found
+						printf("SIGNAL GEN======%d==========  %s \n",targets[i],ch); // REMOVE before deploy
+						//**************************************************************************************
+						//**Insert  harware control here
+						//**************************************************************************************
+						kill (atoi (ch),SIGINT);					// send signal that the work was done
 					}
-					printf("Array %d = write = %d bytes \n",targets[i],tt);
-					fflush (stdout);
-				} else {
-					printf("Array %d error = %d \n",targets[i],errno);
-					fflush (stdout);
 				}
+				if (tt == -1 ) {										// if error occured
+					printf("error %d = %s  read = %d bytes @ %d \n",errno,strerror(errno),tt,targets[i]);	// output error
+					printf("file target specs :- \n  name == %d \n Handle == %d \n ",targets[i],F_HANDR[i]);					// file details
+					fflush (stdout);									// flush output
+				}
+
+				if (tt == 0 ) {											// zero bytes returned
+					cl = targets[i];
+					sprintf(temp1,"%d",cl);
+					RESPONSE = Rget (temp1);
+					if (RESPONSE != NULL) {													// Has redis returned a value
+						cl = atoi(RESPONSE);													// if reply is not null then convert to integer
+						if (cl != 0 ) {														// Check if convertion worked
+							kill(cl,SIGUSR1);
+						}
+					}
+				}
+				close (F_HANDR[i]);												// close file
 			}
 		}
-		sleep (2);
+		sleep (1);
 
 /// re scan for changes in the programs
 		seconds = (Current_time - Crefresh_time);
