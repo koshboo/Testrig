@@ -66,7 +66,7 @@ int main(int argc, char **argv)
 	if (Csqlop (sql) != 0) {
 		exit (1);
 	};
-	closeDB();
+	
 	for (i = 0; i < tag_count ; i++) {
 		errno = 0;
 		sprintf(pipein[i] ,"pipes/to_DEC.%d",targets[i]);				// set file names for the pipes
@@ -87,7 +87,7 @@ int main(int argc, char **argv)
 	sleep (1);
 	time (&Crefresh_time);
 	while (1) {
-		clearscr();
+		//clearscr();
 		for (i = 0; i < tag_count  ; i++) {								// Loop through all numbers
 			strcpy (Temp_Arry,"");
 			tt = 0;
@@ -130,6 +130,10 @@ int main(int argc, char **argv)
 /// re scan for changes in the programs
 		seconds = (Current_time - Crefresh_time);
 		if (seconds > 60 ) {
+		char *sql = "SELECT ID FROM Programs where status = 'Active'"; // get all 'active' programs
+		if (Csqlop (sql) != 0) {
+		exit (1);
+	};
 		}
 
 

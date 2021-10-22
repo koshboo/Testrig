@@ -5,8 +5,8 @@
   <TabInfoArray Name="TabInfoArray">
     <TabInfo>
       <wxString Value="/home/pi/Desktop/Test_area/Testrig/FiFo/fifo/consumer/main.c" Name="FileName"/>
-      <int Value="0" Name="FirstVisibleLine"/>
-      <int Value="11" Name="CurrentLine"/>
+      <int Value="125" Name="FirstVisibleLine"/>
+      <int Value="136" Name="CurrentLine"/>
       <wxArrayString Name="Bookmarks"/>
       <IntVector Name="CollapsedFolds"/>
     </TabInfo>
@@ -26,15 +26,15 @@
     </TabInfo>
     <TabInfo>
       <wxString Value="/home/pi/Desktop/Test_area/Testrig/LIBS/Helpers.c" Name="FileName"/>
-      <int Value="0" Name="FirstVisibleLine"/>
-      <int Value="0" Name="CurrentLine"/>
+      <int Value="76" Name="FirstVisibleLine"/>
+      <int Value="100" Name="CurrentLine"/>
       <wxArrayString Name="Bookmarks"/>
       <IntVector Name="CollapsedFolds"/>
     </TabInfo>
     <TabInfo>
       <wxString Value="/home/pi/Desktop/Test_area/Testrig/Rig project/Controller/main.c" Name="FileName"/>
-      <int Value="50" Name="FirstVisibleLine"/>
-      <int Value="71" Name="CurrentLine"/>
+      <int Value="268" Name="FirstVisibleLine"/>
+      <int Value="298" Name="CurrentLine"/>
       <wxArrayString Name="Bookmarks"/>
       <IntVector Name="CollapsedFolds"/>
     </TabInfo>

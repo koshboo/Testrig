@@ -283,7 +283,7 @@ void writeDB(char *sql)
 	while (DB_stat == 0) {										// loop while db is not open
 
 		DB_stat = openDB();										// open DB will always return true
-	
+	}
 		sqlite3_busy_timeout (db,2000);
 		rc = sqlite3_exec(db,sql,Callback, 0, &err_msg);   	    // if db open do the write
 		
@@ -296,9 +296,7 @@ void writeDB(char *sql)
 			int num =(rand()% (5 - 1 +1 ))+ 1;
 			sleep (num);												// wait 1 second and try again
 		}
-	}
-	
-	DB_stat = closeDB();										// close DB only done when db write is completed
+
 }
 int Callback(void *a_param, int argc, char **argv, char **column)
 {
