@@ -1,8 +1,0 @@
-#Bay 1,Out,Time,4
-0x26,2,0,1,10
-#ram 2,Out,Time,4
-0x20,2,0,1,10
-#ram 2,In,Time,4
-0x20,2,0,0,10
-#Bay 2,In,Time,4
-0x26,2,0,0,10

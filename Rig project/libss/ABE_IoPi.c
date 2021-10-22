@@ -1,4 +1,4 @@
-#include </home/aron/Desktop/Test_area/Rig project/libss/ABE_IoPi.h>
+#include <../libss/ABE_IoPi.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

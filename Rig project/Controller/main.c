@@ -13,7 +13,8 @@
 #include <time.h>
 #include <errno.h>
 #include <signal.h>
-
+int linesd;
+#define debug printf("tag %d \n",linesd);	fflush (stdout);linesd = linesd + 1;
 //functions
 int Callback(void *a_param, int argc, char **argv, char **column);
 void writeDB(char *sql);
@@ -26,6 +27,7 @@ char stata ;
 int target;
 int sig;
 int  L_Number;
+
 time_t oldtime,newtime,regtime,tartime,aron_time;
 struct timespec tim,tim2;
 struct sqlret {
@@ -44,9 +46,10 @@ void SIG_NOK (int signum)
 }
 int main(int argc, char **argv)
 {
-
+linesd = 0;
 	signal(SIGINT,SIG_OK);		// redirect sig int to my
 	signal(SIGUSR1,SIG_NOK);		// redirect sig int to my
+	
 	char arr[25];
 
 	int Cfile1;
@@ -60,14 +63,15 @@ int main(int argc, char **argv)
 	char cmd [10][10];
 	FILE *fp;
 	double seconds;
+	
 	// locate and load file
 	char file_location [70];
-
 	strcpy(file_location,"Programs/");
 	strcat(file_location,argv[1]);
 	if (access (file_location,F_OK)!= 0) {  						// Check if the file in the starting arguments exist
 		exit (0);													// Exit if it does not
 	}
+	
 	fp = fopen(file_location, "r");									// open file readonly
 	strcpy(file_location,"Programs/Logs/Error/");
 	strcat(file_location,argv[1]);
@@ -77,26 +81,33 @@ int main(int argc, char **argv)
 	strcpy(file_location,"Programs/Logs/");
 	strcat(file_location,argv[1]);									// copy The file name totemporary variable
 	strcat(file_location,".log");									// Add .log to the filename for the logging
+	remove (file_location);
+	sleep(1);
 	freopen(file_location,"a", stdout );							// Redirect all logging output to file
 
 	count = 0;
 	target = 0;
 	char  myfifo[30] ;
-
+    
 
 	//SQLITE
 	/*  Open SQLITE3 database
 	 * 	Read count and target
 	 * Close connection to DBase
 	 */
+	
+	
 	DB_stat = 0;
 	stata = 10;
 	sprintf (temp,"SELECT Status,target,count FROM Programs where ID = %s",argv[1]); // form the sql query
 	char *sql = (temp); 											// copy query into the correct format
 	writeDB (sql);													// open DB Process query and close.
+	
+
 	if (stata == 0) {
 		time (&newtime);
 		printf ("Started - %s ",asctime(localtime(&newtime)));			// Log start time
+		fflush(stdout);
 		printf ("Start count - %i \n",count);							// Log start count
 
 		/*  Open redis database
@@ -105,7 +116,7 @@ int main(int argc, char **argv)
 		 */
 		int i = getpid ();												//get pid of this process
 		Rseti(argv[1],i);												// Register pid on the redis server
-
+		
 		/*
 		 * Read the file line by line and copy to variable Program lines
 		 */
@@ -122,36 +133,40 @@ int main(int argc, char **argv)
 		L_Number = 0;													// zero line count
 		time(&regtime);													// get time for use in the sql update sequence
 	}
-
+	
 	sprintf(myfifo,"pipes/to_DEC.%s",argv[1]);							// Name of the the out bound pipe
 	if (access (myfifo,F_OK)== 0) {										// does myfifo exist - process killed not shut down properly
 		remove (myfifo);												// remove the old file
 		sleep (3);														// sleep to allow the remaoval
 
 	}
+
 	/* MAIN PROGRAM LOOP*/
 	while ( stata == 0 ) {						   				// loop until the count = target count
 
-		sprintf (temp,"SELECT Status FROM Programs where ID = %s",argv[1]); // form the sql query
+		sprintf (temp,"SELECT Status,target FROM Programs where ID = %s",argv[1]);
 		sql = (temp); 												// copy query into the correct format
 		writeDB(sql);												// open DB Process query and close.
+		
 		if (stata != 0) {
 			break;
 		}
-
+	
 		/* break the program line into chunks for processing*/
 		time(&oldtime);												// start time for cycle timing
-
+		
 		while (L_Number <= PL_Number) {						// while line number is lower than program lines
 			mkfifo (myfifo,0666);							// create the fifo file
 			errno = 0;										// clear the error code
 			Cfile1 = open (myfifo, O_RDWR);					// open the fifo
+		
 			while (errno != 0 ) {							// did it open correctly if not loop
 				tim.tv_nsec = 1000000;						// set tim to 10 millisecond
 				nanosleep (&tim,&tim2);						// sleep for tim
 				fprintf(stderr,"Error - %d === %s \n",errno,strerror (errno)); // print error to error log
 				Cfile1 = open (myfifo, O_RDWR);				// try to reopen the fifo file.
 			}
+			
 			if (L_Number <0) {								// has the line number been set to < 0
 				L_Number = 0;								// set linenumber to 0
 			}
@@ -162,7 +177,7 @@ int main(int argc, char **argv)
 				strcpy(cmd[cmd_num],token);					// Copy token to cmd (n)
 				token = strtok(NULL,",");					// next token
 				++ cmd_num;									// increment cmd
-			}
+			}debug;
 			/*
 			 * Process the chunks
 			 */
@@ -232,12 +247,15 @@ int main(int argc, char **argv)
 
 		if (seconds > 60) {
 			// get current time
+			printf ("update %d \n",1);
+			fflush(stdout);
 			seconds = difftime(newtime,oldtime);						// how long did it take to do the cycle
 			tartime = newtime+((target - count)* seconds);				// Calculate time to finish
 			sprintf (temp,"UPDATE Programs SET count = %i, EST_Finish_date = '%s' WHERE ID = %s \n",count, asctime(gmtime(&tartime)),argv[1]); // Create string for update
 			char *sql = (temp); 									//
 			writeDB(sql);											// open DB Process query and close.
 			time(&regtime);											// up date regtime
+			
 		}
 		L_Number = 0;												// zero line number
 		count ++;													// increase count
@@ -254,8 +272,8 @@ int main(int argc, char **argv)
 	sql = (temp);
 	writeDB(sql);											// open DB Process query and close.
 	time (&tartime);
-	printf ("Stopped - %s ",asctime(localtime(&tartime)));	// Log Stop time
-	printf ("Stop count - %i \n",count);					// Log Stop count
+	printf ("Stopped - %s ,%d ",asctime(localtime(&tartime)),stata);	// Log Stop time
+	printf ("Stop count - %i of %i \n",count,target);					// Log Stop count
 	fflush (stdout);
 	return 0;												// Terminate program
 }
@@ -263,9 +281,12 @@ void writeDB(char *sql)
 {
 
 	while (DB_stat == 0) {										// loop while db is not open
+
 		DB_stat = openDB();										// open DB will always return true
+	
 		sqlite3_busy_timeout (db,2000);
 		rc = sqlite3_exec(db,sql,Callback, 0, &err_msg);   	    // if db open do the write
+		
 		if (rc != SQLITE_OK) {									// if the operation complete with out error
 			fprintf(stderr," dbase error %s  \n",err_msg);
 			fprintf(stderr," Out put %s  \n",sql);
@@ -276,19 +297,22 @@ void writeDB(char *sql)
 			sleep (num);												// wait 1 second and try again
 		}
 	}
+	
 	DB_stat = closeDB();										// close DB only done when db write is completed
 }
 int Callback(void *a_param, int argc, char **argv, char **column)
 {
-
+	
 	if (argv [2] != NULL) {
 		count = strtol(argv[2],NULL,10);									// Argumant 2 is the count value
 	}
 	if (argv [1] != NULL) {
 		target = strtol(argv[1],NULL,10);								    // Argumant 1 is the target value
 	}
+	
 	if (argv [0] != NULL) {
 		stata = (strcmp(argv[0],"Active"));									// Argument 0 is the status value
 	}
+	
 	return 0;
 }

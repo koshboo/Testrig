@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<CodeLite_Workspace Name="Rig project" Database="">
+<CodeLite_Workspace Name="Rig project" Database="" Version="10.0.0">
   <Project Name="God" Path="God/God.project" Active="No"/>
   <Environment>
     <![CDATA[]]>
   </Environment>
-  <Project Name="Controller" Path="Controller/Controller.project" Active="No"/>
+  <Project Name="Controller" Path="Controller/Controller.project" Active="Yes"/>
   <Project Name="shared_mem_read" Path="../FiFo/fifo/shared_mem_read/shared_mem_read.project" Active="No"/>
-  <Project Name="consumer" Path="../FiFo/fifo/consumer/consumer.project" Active="Yes"/>
+  <Project Name="consumer" Path="../FiFo/fifo/consumer/consumer.project" Active="No"/>
   <BuildMatrix>
     <WorkspaceConfiguration Name="Debug" Selected="yes">
       <Project Name="God" ConfigName="Debug"/>
