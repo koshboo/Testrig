@@ -14,8 +14,6 @@
 #include <signal.h>
 #include <time.h>
 
-
-#define clearscr() printf("\033c")
 int Callback(void *a_param, int argc, char **argv, char **column);
 int Csqlop (char* sql);
 char *ch;
@@ -49,13 +47,12 @@ int main(int argc, char **argv)
 
 	i = getpid ();															// Get PID of this program
 	Rseti("DEC",i);															// set DEC pid in redis
-
 	IOPI_init(0x26,1);
 	IOPI_init(0x20,1);
 	char name [] = "fifo";
 	strcpy(name,"DEC");									// copy The file name to temporary variable
 	strcat(name,".LOG");								// Add .err to the filename for the error log
-	//freopen( name, "a", stdout );
+	freopen( name, "a", stdout );
 	char Temp_Arry[50];									// temprary array for multiple things
 	char pipein  [30][30];								// reader pipe text name
 	int F_HANDR [30] = {-1};							// reader file handles
@@ -87,7 +84,6 @@ int main(int argc, char **argv)
 	sleep (1);
 	time (&Crefresh_time);
 	while (1) {
-		//clearscr();
 		for (i = 0; i < tag_count  ; i++) {								// Loop through all numbers
 			strcpy (Temp_Arry,"");
 			tt = 0;
@@ -98,7 +94,7 @@ int main(int argc, char **argv)
 				if (tt > 1) {											// did we rea more than 1 byte
 					ch = strtok(Temp_Arry, ",");						// split off the PID of the sender
 					if (ch != NULL) {									// was the pid found
-						printf("SIGNAL GEN======%d==========  %s \n",targets[i],ch); // REMOVE before deploy
+						//printf("SIGNAL GEN======%d==========  %s \n",targets[i],ch); // REMOVE before deploy
 						//**************************************************************************************
 						//**Insert  harware control here
 						//**************************************************************************************
@@ -108,21 +104,21 @@ int main(int argc, char **argv)
 				if (tt == -1 ) {										// if error occured
 					printf("error %d = %s  read = %d bytes @ %d \n",errno,strerror(errno),tt,targets[i]);	// output error
 					printf("file target specs :- \n  name == %d \n Handle == %d \n ",targets[i],F_HANDR[i]);					// file details
-					fflush (stdout);									// flush output
+					fflush (stdout);														// flush output
 				}
 
-				if (tt == 0 ) {											// zero bytes returned
+				if (tt == 0 ) {																// zero bytes returned
 					cl = targets[i];
 					sprintf(temp1,"%d",cl);
 					RESPONSE = Rget (temp1);
 					if (RESPONSE != NULL) {													// Has redis returned a value
-						cl = atoi(RESPONSE);													// if reply is not null then convert to integer
+						cl = atoi(RESPONSE);												// if reply is not null then convert to integer
 						if (cl != 0 ) {														// Check if convertion worked
 							kill(cl,SIGUSR1);
 						}
 					}
 				}
-				close (F_HANDR[i]);												// close file
+				close (F_HANDR[i]);															// close file
 			}
 		}
 		sleep (1);
@@ -130,10 +126,10 @@ int main(int argc, char **argv)
 /// re scan for changes in the programs
 		seconds = (Current_time - Crefresh_time);
 		if (seconds > 60 ) {
-		char *sql = "SELECT ID FROM Programs where status = 'Active'"; // get all 'active' programs
+		char *sql = "SELECT ID FROM Programs where status = 'Active'"; 						// get all 'active' programs
 		if (Csqlop (sql) != 0) {
 		exit (1);
-	};
+	};		
 		}
 
 

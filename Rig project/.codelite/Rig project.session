@@ -26,15 +26,15 @@
     </TabInfo>
     <TabInfo>
       <wxString Value="/home/pi/Desktop/Test_area/Testrig/LIBS/Helpers.c" Name="FileName"/>
-      <int Value="76" Name="FirstVisibleLine"/>
+      <int Value="102" Name="FirstVisibleLine"/>
       <int Value="100" Name="CurrentLine"/>
       <wxArrayString Name="Bookmarks"/>
       <IntVector Name="CollapsedFolds"/>
     </TabInfo>
     <TabInfo>
       <wxString Value="/home/pi/Desktop/Test_area/Testrig/Rig project/Controller/main.c" Name="FileName"/>
-      <int Value="268" Name="FirstVisibleLine"/>
-      <int Value="298" Name="CurrentLine"/>
+      <int Value="279" Name="FirstVisibleLine"/>
+      <int Value="293" Name="CurrentLine"/>
       <wxArrayString Name="Bookmarks"/>
       <IntVector Name="CollapsedFolds"/>
     </TabInfo>

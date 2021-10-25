@@ -177,7 +177,7 @@ linesd = 0;
 				strcpy(cmd[cmd_num],token);					// Copy token to cmd (n)
 				token = strtok(NULL,",");					// next token
 				++ cmd_num;									// increment cmd
-			}debug;
+			}
 			/*
 			 * Process the chunks
 			 */
@@ -247,8 +247,6 @@ linesd = 0;
 
 		if (seconds > 60) {
 			// get current time
-			printf ("update %d \n",1);
-			fflush(stdout);
 			seconds = difftime(newtime,oldtime);						// how long did it take to do the cycle
 			tartime = newtime+((target - count)* seconds);				// Calculate time to finish
 			sprintf (temp,"UPDATE Programs SET count = %i, EST_Finish_date = '%s' WHERE ID = %s \n",count, asctime(gmtime(&tartime)),argv[1]); // Create string for update
