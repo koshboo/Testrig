@@ -15,11 +15,10 @@
         <Filename Value="unit3.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="Unit3"/>
-        <IsVisibleTab Value="True"/>
         <EditorIndex Value="0"/>
         <WindowIndex Value="0"/>
         <TopLine Value="45"/>
-        <CursorPos X="5" Y="129"/>
+        <CursorPos X="60" Y="136"/>
         <FoldState Value=" T4601 T3i60C2 T6iL04]G1i909]G0iV243/"/>
         <UsageCount Value="386"/>
         <Loaded Value="True"/>
@@ -45,10 +44,11 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="Unit1"/>
+        <IsVisibleTab Value="True"/>
         <EditorIndex Value="2"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="567"/>
-        <CursorPos X="1" Y="584"/>
+        <TopLine Value="564"/>
+        <CursorPos X="122" Y="573"/>
         <FoldState Value=" T7EF4 T8F222 T3m0062 pjDjP0Q113]3[P51m303[P42jR0L[PB6mA0342123 T0mH2K8 piakN4571A463"/>
         <UsageCount Value="204"/>
         <Bookmarks Count="2">

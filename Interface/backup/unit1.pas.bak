@@ -564,7 +564,7 @@ procedure TForm1.Timer3Timer(Sender: TObject);
 // Update the grid
 begin
   unit3.Check_SQL(
-    'Select Bay,ID,Description,Owner,EST_Finish_date,count From Programs where status = "Active" order by "Bay"');
+    'Select Bay,ID,Description,Owner,EST_Finish_date,count From Programs where status = "Active" order by "ID"');
   SetDBCols;
 end;
 

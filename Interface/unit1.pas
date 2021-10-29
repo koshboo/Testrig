@@ -168,6 +168,8 @@ type
     procedure MOve_downClick(Sender: TObject);
     procedure Move_upClick(Sender: TObject);
     procedure apply_update(mode: TUpdateMode);
+    procedure Sheet_loginContextPopup(Sender: TObject; MousePos: TPoint;
+      var Handled: Boolean);
     procedure Sheet_ProgramsContextPopup(Sender: TObject; MousePos: TPoint;
       var Handled: Boolean);
 
@@ -253,9 +255,7 @@ begin
   end
   else
   begin
-    Application.MessageBox('Config file missing ' + slinebreak +
-      'Please contact TECHNICAL for assistance', 'Fatal error', BoxStyle);
-    application.Terminate;
+             base := extractfiledir(paramstr(0)) ;
     // terminate application you cannot start without a config
   end;
   Program_sl := TStringList.Create;
@@ -363,6 +363,12 @@ begin
   SQLQuery1.Close();
   SQLQuery1.Open();
   SQLTransaction1.CommitRetaining;
+end;
+
+procedure TForm1.Sheet_loginContextPopup(Sender: TObject; MousePos: TPoint;
+  var Handled: Boolean);
+begin
+
 end;
 
 procedure TForm1.Sheet_ProgramsContextPopup(Sender: TObject; MousePos: TPoint;
