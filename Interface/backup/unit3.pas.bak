@@ -10,6 +10,7 @@ Function Check_SQL (Query : String):integer;
 procedure startdetachedprogram(cmd: string);
 function Split(const strwhole: string; const separator: string): tstringlist;
 Function redis_DO (cmd: string ; param :array of const) :string;
+Function sql_execute (): Boolean;
 
 
 
@@ -50,8 +51,6 @@ procedure startdetachedprogram(cmd: string);
 var sh:tstringlist;
 const fn='/dev/shm/startdetachscript';
 begin
-  if not fileexists(cmd) then Messagedlgpos(cmd +slinebreak+'Please contact TECHNICAL for assistance',mterror,[mbok],0,10,10);
-
   sh:=tstringlist.Create;
   sh.add('nohup '+cmd+' >/dev/null 2>&1 &');
   sh.add('disown');
@@ -122,5 +121,29 @@ begin
  if return = nil then ret:= '';
  Result := ret
 end;
+Function sql_execute (): Boolean;
+var
+    Loop : Integer;
+begin
+ Repeat
+ Loop := 0;
+ with form1 do
+  Begin
+  try
+      SQLQuery1.ExecSQL;
+      SQLTransaction1.Commit;
+
+  Except
+        on e: EDatabaseError do
+         begin
+             sleep (1000);
+             Loop := 1;
+             messagedlg(e.Message,mtError, mbOKCancel, 0);
+         end;
+  end;
+  Until loop = 0;
+  end;
+end;
+
 end.
 

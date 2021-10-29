@@ -1,7 +1,12 @@
-Debug/main.c.o: main.c redis_helper.h Helpers.h Core.h
+Debug/main.c.o: main.c /home/aron/Desktop/Test_area/LIBS/redis_helper.h \
+ /usr/include/hiredis/hiredis.h \
+ /home/aron/Desktop/Test_area/LIBS/Helpers.h \
+ /home/aron/Desktop/Test_area/LIBS/Core.h
 
-redis_helper.h:
+/home/aron/Desktop/Test_area/LIBS/redis_helper.h:
 
-Helpers.h:
+/usr/include/hiredis/hiredis.h:
 
-Core.h:
+/home/aron/Desktop/Test_area/LIBS/Helpers.h:
+
+/home/aron/Desktop/Test_area/LIBS/Core.h:

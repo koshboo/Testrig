@@ -10,6 +10,7 @@ Function Check_SQL (Query : String):integer;
 procedure startdetachedprogram(cmd: string);
 function Split(const strwhole: string; const separator: string): tstringlist;
 Function redis_DO (cmd: string ; param :array of const) :string;
+Function sql_execute (): Boolean;
 
 
 
@@ -120,5 +121,30 @@ begin
  if return = nil then ret:= '';
  Result := ret
 end;
+Function sql_execute (): Boolean;
+var
+    Loop : Integer;
+begin
+ with form1 do
+  Begin
+ Repeat
+ Loop := 0;
+
+  try
+      SQLQuery1.ExecSQL;
+      SQLTransaction1.Commit;
+
+  Except
+        on e: EDatabaseError do
+         begin
+             sleep (1000);
+             Loop := 1;
+             messagedlg(e.Message,mtError, mbOKCancel, 0);
+         end;
+  end;
+  Until loop = 0;
+  end;
+end;
+
 end.
 

@@ -34,7 +34,8 @@ char temp1[20];
 int main(int argc, char **argv)
 {
 	int i;																	// temporary variable
-
+	printf ("kill %d ",0);
+	fflush(stdout);
 	RESPONSE = Rget ("DEC");												// Get redis key "DEC" value
 	if (RESPONSE != NULL) {													// Has redis returned a value
 		i = atoi(RESPONSE);													// if reply is not null then convert to integer
@@ -44,28 +45,32 @@ int main(int argc, char **argv)
 			}
 		}
 	}
-
+printf ("kill %d ",0);
+fflush (stdout);
 	i = getpid ();															// Get PID of this program
 	Rseti("DEC",i);															// set DEC pid in redis
-	IOPI_init(0x26,1);
-	IOPI_init(0x20,1);
+	//IOPI_init(0x26,1);
+	//IOPI_init(0x20,1);
 	char name [] = "fifo";
 	strcpy(name,"DEC");									// copy The file name to temporary variable
 	strcat(name,".LOG");								// Add .err to the filename for the error log
-	freopen( name, "a", stdout );
+	//freopen( name, "a", stdout );
 	char Temp_Arry[50];									// temprary array for multiple things
 	char pipein  [30][30];								// reader pipe text name
 	int F_HANDR [30] = {-1};							// reader file handles
 	tag_count = 0;
 	int tt;
+	
 	openDB();
 	char *sql = "SELECT ID FROM Programs where status = 'Active'"; // get all 'active' programs
 	if (Csqlop (sql) != 0) {
 		exit (1);
 	};
-	
+		printf ("kill %d ",tag_count);
+		fflush(stdout);
 	for (i = 0; i < tag_count ; i++) {
 		errno = 0;
+		
 		sprintf(pipein[i] ,"pipes/to_DEC.%d",targets[i]);				// set file names for the pipes
 		if (access (pipein[i],F_OK)== 0) {								// does a file exist for this process
 			F_HANDR[i] = open (pipein[i],O_RDONLY|O_NONBLOCK);			// open first fifo
@@ -74,8 +79,10 @@ int main(int argc, char **argv)
 			ch = strtok(Temp_Arry, ",");								// remove the first data point and store in ch
 			close (F_HANDR[i]);											// close handle
 			if (ch != NULL) {											// was the process id found?
-				kill (atoi (ch),SIGUSR1);										// send NOK signal to make the program repeat last statement
+				kill (atoi (ch),SIGUSR1);								// send NOK signal to make the program repeat last statement
+				printf ("kill %s ",ch);
 			}
+			
 
 		}
 
@@ -94,7 +101,7 @@ int main(int argc, char **argv)
 				if (tt > 1) {											// did we rea more than 1 byte
 					ch = strtok(Temp_Arry, ",");						// split off the PID of the sender
 					if (ch != NULL) {									// was the pid found
-						//printf("SIGNAL GEN======%d==========  %s \n",targets[i],ch); // REMOVE before deploy
+						printf("SIGNAL GEN======%d==========  %s \n",targets[i],ch); // REMOVE before deploy
 						//**************************************************************************************
 						//**Insert  harware control here
 						//**************************************************************************************
@@ -126,6 +133,7 @@ int main(int argc, char **argv)
 /// re scan for changes in the programs
 		seconds = (Current_time - Crefresh_time);
 		if (seconds > 60 ) {
+		tag_count = 0;
 		char *sql = "SELECT ID FROM Programs where status = 'Active'"; 						// get all 'active' programs
 		if (Csqlop (sql) != 0) {
 		exit (1);

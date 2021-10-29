@@ -123,7 +123,7 @@ int main(int argc, char **argv)
 		fflush(stdout);											// flush stdout ensure that all prints are processed
 		fflush(stderr);											// Flush stdERR
 		sleep (5);												// Wait 5 seconds beforer redoing scan
-	}
+	;}
 	return 1;													// fall through and exit
 }
 /***************

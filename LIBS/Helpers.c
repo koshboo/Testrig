@@ -44,16 +44,15 @@ void New_process (char* Name,char* Argval)		// generate new process
 	pid = fork();
 	if (pid == 0) {				// child process
 		pid = fork ();
-		
 		if (pid == 0) {			// Grand child process
 			int t ;
+			t = 0;
+			printf (" Attempting to start %s \n",Argval);
+			fflush (stdout);
 			t = execv (Name,parmList);
 			if (t < 0) {
-				fprintf (stderr,"failed to start %s %s \n",Name,parmList[1]);
+				fprintf (stdout,"failed to start %s %s \n",Name,parmList[1]);
 			}
-			if (t >= 0) {
-				(printf ("  %s started - %s \n",Name,get_time()));
-			}; // print the target was started to stdout
 			exit (0);
 		} else {
 			exit(0);

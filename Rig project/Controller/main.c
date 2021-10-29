@@ -17,7 +17,7 @@ int linesd;
 #define debug printf("tag %d \n",linesd);	fflush (stdout);linesd = linesd + 1;
 //functions
 int Callback(void *a_param, int argc, char **argv, char **column);
-void writeDB(char *sql);
+void writeDB(char *sql, int c); 
 //variables
 
 char *err_msg = 0;
@@ -81,7 +81,7 @@ linesd = 0;
 	strcpy(file_location,"Programs/Logs/");
 	strcat(file_location,argv[1]);									// copy The file name totemporary variable
 	strcat(file_location,".log");									// Add .log to the filename for the logging
-	remove (file_location);
+	//remove (file_location); //////////////////////////remove
 	sleep(1);
 	freopen(file_location,"a", stdout );							// Redirect all logging output to file
 
@@ -101,15 +101,13 @@ linesd = 0;
 	stata = 10;
 	sprintf (temp,"SELECT Status,target,count FROM Programs where ID = %s",argv[1]); // form the sql query
 	char *sql = (temp); 											// copy query into the correct format
-	writeDB (sql);													// open DB Process query and close.
+	writeDB (sql,0);													// open DB Process query and close.
 	
 
 	if (stata == 0) {
 		time (&newtime);
-		printf ("Started - %s ",asctime(localtime(&newtime)));			// Log start time
+		printf ("Started - %s \n ",asctime(localtime(&newtime)));			// Log start time
 		fflush(stdout);
-		printf ("Start count - %i \n",count);							// Log start count
-
 		/*  Open redis database
 		 * 	Log pid on data base
 		 * Close connection to DBase
@@ -146,14 +144,14 @@ linesd = 0;
 
 		sprintf (temp,"SELECT Status,target FROM Programs where ID = %s",argv[1]);
 		sql = (temp); 												// copy query into the correct format
-		writeDB(sql);												// open DB Process query and close.
+		writeDB(sql,count);												// open DB Process query and close.
 		
 		if (stata != 0) {
 			break;
 		}
 	
 		/* break the program line into chunks for processing*/
-		time(&oldtime);												// start time for cycle timing
+		time(&oldtime);										// start time for cycle timing
 		
 		while (L_Number <= PL_Number) {						// while line number is lower than program lines
 			mkfifo (myfifo,0666);							// create the fifo file
@@ -248,10 +246,16 @@ linesd = 0;
 		if (seconds > 60) {
 			// get current time
 			seconds = difftime(newtime,oldtime);						// how long did it take to do the cycle
-			tartime = newtime+((target - count)* seconds);				// Calculate time to finish
-			sprintf (temp,"UPDATE Programs SET count = %i, EST_Finish_date = '%s' WHERE ID = %s \n",count, asctime(gmtime(&tartime)),argv[1]); // Create string for update
+			int targettime = (target - count)			 ;				// Calculate time to finish
+			targettime = targettime * seconds;
+			tartime = time(NULL) + targettime;
+			char * s ;
+			s = asctime(gmtime(&tartime));
+			s[strcspn(s,"\n")]= '\0';
+			sprintf (temp,"UPDATE Programs SET count = %i, EST_Finish_date = '%s' WHERE ID = %s ",count, s,argv[1]); // Create string for update
+			fflush(stdout);
 			char *sql = (temp); 									//
-			writeDB(sql);											// open DB Process query and close.
+			writeDB(sql,count);											// open DB Process query and close.
 			time(&regtime);											// up date regtime
 			
 		}
@@ -266,18 +270,17 @@ linesd = 0;
 	if (stata == 2) {
 		count = count - 1;
 	}									// remove the extra count from count
-	sprintf (temp,"UPDATE Programs SET count = %i  WHERE ID = %s \n",count,argv[1]); // Create string for update
+	sprintf (temp,"UPDATE Programs SET count = %d  WHERE ID = %s \n",count,argv[1]); // Create string for update
 	sql = (temp);
-	writeDB(sql);											// open DB Process query and close.
+	writeDB(sql,count);											// open DB Process query and close.
 	time (&tartime);
 	printf ("Stopped - %s ,%d ",asctime(localtime(&tartime)),stata);	// Log Stop time
-	printf ("Stop count - %i of %i \n",count,target);					// Log Stop count
 	fflush (stdout);
 	return 0;												// Terminate program
-}
-void writeDB(char *sql)
+}// TODO help
+void writeDB(char *sql, int c) 
 {
-
+	
 	while (DB_stat == 0) {										// loop while db is not open
 
 		DB_stat = openDB();										// open DB will always return true
@@ -287,14 +290,14 @@ void writeDB(char *sql)
 		
 		if (rc != SQLITE_OK) {									// if the operation complete with out error
 			fprintf(stderr," dbase error %s  \n",err_msg);
-			fprintf(stderr," Out put %s  \n",sql);
+			fprintf(stderr," Output %s  \n",sql);
 			fflush (stderr);
 			closeDB();												// Close DB
 			sqlite3_free(err_msg);
 			int num =(rand()% (5 - 1 +1 ))+ 1;
 			sleep (num);												// wait 1 second and try again
 		}
-
+		if (c != 0) {count = c;}
 }
 int Callback(void *a_param, int argc, char **argv, char **column)
 {
