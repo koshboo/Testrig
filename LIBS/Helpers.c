@@ -38,14 +38,13 @@ char* Add_intostr (char* S,int I)	// Add int to end of string
 void New_process (char* Name,char* Argval)		// generate new process
 {
 	int status;
-	char* parmList[] = {"", Argval, NULL}; //  param list mus be NULL terminated first value is irrelervent
+	char* parmList[] = {NULL, Argval, NULL}; //  param list mus be NULL terminated first value is irrelervent
 	pid_t pid;
-	
 	pid = fork();
 	if (pid == 0) {				// child process
-		pid = fork ();
+		pid = fork ();			// fork again.
 		if (pid == 0) {			// Grand child process
-			int t ;
+			int t;
 			t = 0;
 			printf (" Attempting to start %s \n",Argval);
 			fflush (stdout);
@@ -53,18 +52,18 @@ void New_process (char* Name,char* Argval)		// generate new process
 			if (t < 0) {
 				fprintf (stdout,"failed to start %s %s \n",Name,parmList[1]);
 			}
-			exit (0);
+			exit (0);					// grandchild end if it failed to fork 
 		} else {
-			exit(0);
+			exit (0);					// child ends
 		}
 	} else {
-		waitpid(pid, &status, 0);		// child process
+		waitpid(pid, &status, 0);		// wait for child to finish 
 	}
 }
 int openDB(void)
 {
 	FILE *fp;
-	char line [50];
+	char line [100];
 	fp = fopen("config", "r");
 	if (fp != NULL) {
 		ReadLine (line, sizeof (line), fp);
@@ -91,6 +90,7 @@ int openDB(void)
 		fflush(stderr);
 		exit(1);
 	}
+	fclose (fp);
 	return 1;
 
 }

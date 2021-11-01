@@ -1,13 +1,13 @@
 #include <stdio.h>
-#include "redis_helper.h"
+#include "../../LIBS/redis_helper.h"
 #include <sys/types.h>
 #include <unistd.h>
 #include <string.h>
 #include <signal.h>
 #include <stdlib.h>
 #include <errno.h>
-#include "Helpers.h"
-#include "Core.h"
+#include "../../LIBS/Helpers.h"
+#include "../../LIBS/Core.h"
 
 int Callback(void *a_param, int argc, char **argv, char **column);
 int  reboot_p (char* Name);
@@ -81,7 +81,8 @@ int main(int argc, char **argv)
 				if (kill (PIDS[count],0) != 0) {				// verify process  not running
 					strcpy(target, "./");						// Add run command to target
 					strcat (target,ARG);						// Add target name to target
-					New_process (target,NULL);					// Start new process
+					printf("hello",1);
+					New_process (target,ARG);					// Start new process
 					sleep (1);									// sleep 1 second to make sure new process has started and register with redis
 					PIDS[count] = reboot_p (ARG);				// get new PID number from redis
 				}

@@ -63,9 +63,13 @@ linesd = 0;
 	char cmd [10][10];
 	FILE *fp;
 	double seconds;
-	
-	// locate and load file
 	char file_location [70];
+	strcpy(file_location,"Programs/controller.log");
+	fp = fopen(file_location, "a");
+	fputs ("started \n",fp);
+	fclose(fp);
+	// locate and load file
+	
 	strcpy(file_location,"Programs/");
 	strcat(file_location,argv[1]);
 	if (access (file_location,F_OK)!= 0) {  						// Check if the file in the starting arguments exist
@@ -81,7 +85,6 @@ linesd = 0;
 	strcpy(file_location,"Programs/Logs/");
 	strcat(file_location,argv[1]);									// copy The file name totemporary variable
 	strcat(file_location,".log");									// Add .log to the filename for the logging
-	//remove (file_location); //////////////////////////remove
 	sleep(1);
 	freopen(file_location,"a", stdout );							// Redirect all logging output to file
 
@@ -141,19 +144,24 @@ linesd = 0;
 
 	/* MAIN PROGRAM LOOP*/
 	while ( stata == 0 ) {						   				// loop until the count = target count
-
+		linesd = 0;
+		printf ("before for active done \n %d",0);
+		fflush (stdout);
 		sprintf (temp,"SELECT Status,target FROM Programs where ID = %s",argv[1]);
-		sql = (temp); 												// copy query into the correct format
+		sql = temp; 												// copy query into the correct format
 		writeDB(sql,count);												// open DB Process query and close.
 		
+		fflush (stdout);
 		if (stata != 0) {
 			break;
 		}
 	
 		/* break the program line into chunks for processing*/
 		time(&oldtime);										// start time for cycle timing
-		
+		printf ("start of cycle %d",0);
+		fflush (stdout);
 		while (L_Number <= PL_Number) {						// while line number is lower than program lines
+			debug
 			mkfifo (myfifo,0666);							// create the fifo file
 			errno = 0;										// clear the error code
 			Cfile1 = open (myfifo, O_RDWR);					// open the fifo
@@ -244,7 +252,8 @@ linesd = 0;
 		seconds = difftime(newtime,regtime); // how long since the last update to the sql database
 
 		if (seconds > 60) {
-			// get current time
+			debug;
+			// get current time;
 			seconds = difftime(newtime,oldtime);						// how long did it take to do the cycle
 			int targettime = (target - count)			 ;				// Calculate time to finish
 			targettime = targettime * seconds;
@@ -253,10 +262,12 @@ linesd = 0;
 			s = asctime(gmtime(&tartime));
 			s[strcspn(s,"\n")]= '\0';
 			sprintf (temp,"UPDATE Programs SET count = %i, EST_Finish_date = '%s' WHERE ID = %s ",count, s,argv[1]); // Create string for update
-			fflush(stdout);
+			
 			char *sql = (temp); 									//
 			writeDB(sql,count);											// open DB Process query and close.
+			
 			time(&regtime);											// up date regtime
+			
 			
 		}
 		L_Number = 0;												// zero line number
@@ -264,12 +275,15 @@ linesd = 0;
 		if (count > target) {
 			stata= 2;
 		};									// Set break out condition if count = target
-
+		
 	}
+	
 	/* final write out before the program finishes  */
 	if (stata == 2) {
 		count = count - 1;
 	}									// remove the extra count from count
+	printf ("target %d    count %d    Stata %d \n",target,count,stata);
+	debug;
 	sprintf (temp,"UPDATE Programs SET count = %d  WHERE ID = %s \n",count,argv[1]); // Create string for update
 	sql = (temp);
 	writeDB(sql,count);											// open DB Process query and close.
@@ -278,6 +292,7 @@ linesd = 0;
 	fflush (stdout);
 	return 0;												// Terminate program
 }// TODO help
+
 void writeDB(char *sql, int c) 
 {
 	
@@ -287,7 +302,8 @@ void writeDB(char *sql, int c)
 	}
 		sqlite3_busy_timeout (db,2000);
 		rc = sqlite3_exec(db,sql,Callback, 0, &err_msg);   	    // if db open do the write
-		
+		printf ("check for active done \n %d",0);
+		fflush(stdout);
 		if (rc != SQLITE_OK) {									// if the operation complete with out error
 			fprintf(stderr," dbase error %s  \n",err_msg);
 			fprintf(stderr," Output %s  \n",sql);

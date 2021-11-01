@@ -5,18 +5,18 @@
 ## Debug
 ProjectName            :=shared_mem_read
 ConfigurationName      :=Debug
-WorkspacePath          := "/home/aron/Desktop/Test_area/Rig project"
-ProjectPath            := "/home/aron/Desktop/Test_area/FiFo/fifo/shared_mem_read"
+WorkspacePath          :="/home/pi/Desktop/Test_area/Testrig/Rig project"
+ProjectPath            :=/home/pi/Desktop/Test_area/Testrig/FiFo/fifo/shared_mem_read
 IntermediateDirectory  :=./Debug
 OutDir                 := $(IntermediateDirectory)
 CurrentFileName        :=
 CurrentFilePath        :=
 CurrentFileFullPath    :=
-User                   :=Aron Jones
-Date                   :=10/25/21
-CodeLitePath           :="/home/aron/.codelite"
-LinkerName             :=/usr/bin/g++-4.8 
-SharedObjectLinkerName :=/usr/bin/g++-4.8 -shared -fPIC
+User                   :=
+Date                   :=01/11/21
+CodeLitePath           :=/home/pi/.codelite
+LinkerName             :=/usr/bin/arm-linux-gnueabihf-g++
+SharedObjectLinkerName :=/usr/bin/arm-linux-gnueabihf-g++ -shared -fPIC
 ObjectSuffix           :=.o
 DependSuffix           :=.o.d
 PreprocessSuffix       :=.i
@@ -47,13 +47,13 @@ LibPath                := $(LibraryPathSwitch).
 ## Common variables
 ## AR, CXX, CC, AS, CXXFLAGS and CFLAGS can be overriden using an environment variables
 ##
-AR       := /usr/bin/ar rcu
-CXX      := /usr/bin/g++-4.8 
-CC       := /usr/bin/gcc-4.8 
+AR       := /usr/bin/arm-linux-gnueabihf-ar rcu
+CXX      := /usr/bin/arm-linux-gnueabihf-g++
+CC       := /usr/bin/arm-linux-gnueabihf-gcc
 CXXFLAGS :=  -g -O0 -Wall $(Preprocessors)
 CFLAGS   :=  -g -O0 -Wall $(Preprocessors)
 ASFLAGS  := 
-AS       := /usr/bin/as 
+AS       := /usr/bin/arm-linux-gnueabihf-as
 
 
 ##
@@ -69,7 +69,7 @@ Objects=$(Objects0)
 ##
 ## Main Build Targets 
 ##
-.PHONY: all clean PreBuild PrePreBuild PostBuild
+.PHONY: all clean PreBuild PrePreBuild PostBuild MakeIntermediateDirs
 all: $(OutputFile)
 
 $(OutputFile): $(IntermediateDirectory)/.d $(Objects) 
@@ -77,6 +77,10 @@ $(OutputFile): $(IntermediateDirectory)/.d $(Objects)
 	@echo "" > $(IntermediateDirectory)/.d
 	@echo $(Objects0)  > $(ObjectsFileList)
 	$(LinkerName) $(OutputSwitch)$(OutputFile) @$(ObjectsFileList) $(LibPath) $(Libs) $(LinkOptions)
+
+MakeIntermediateDirs:
+	@test -d ./Debug || $(MakeDirCommand) ./Debug
+
 
 $(IntermediateDirectory)/.d:
 	@test -d ./Debug || $(MakeDirCommand) ./Debug
@@ -88,12 +92,12 @@ PreBuild:
 ## Objects
 ##
 $(IntermediateDirectory)/main.c$(ObjectSuffix): main.c $(IntermediateDirectory)/main.c$(DependSuffix)
-	$(CC) $(SourceSwitch) "/home/aron/Desktop/Test_area/FiFo/fifo/shared_mem_read/main.c" $(CFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/main.c$(ObjectSuffix) $(IncludePath)
+	$(CC) $(SourceSwitch) "/home/pi/Desktop/Test_area/Testrig/FiFo/fifo/shared_mem_read/main.c" $(CFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/main.c$(ObjectSuffix) $(IncludePath)
 $(IntermediateDirectory)/main.c$(DependSuffix): main.c
-	@$(CC) $(CFLAGS) $(IncludePath) -MG -MP -MT$(IntermediateDirectory)/main.c$(ObjectSuffix) -MF$(IntermediateDirectory)/main.c$(DependSuffix) -MM "main.c"
+	@$(CC) $(CFLAGS) $(IncludePath) -MG -MP -MT$(IntermediateDirectory)/main.c$(ObjectSuffix) -MF$(IntermediateDirectory)/main.c$(DependSuffix) -MM main.c
 
 $(IntermediateDirectory)/main.c$(PreprocessSuffix): main.c
-	@$(CC) $(CFLAGS) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/main.c$(PreprocessSuffix) "main.c"
+	$(CC) $(CFLAGS) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/main.c$(PreprocessSuffix) main.c
 
 
 -include $(IntermediateDirectory)/*$(DependSuffix)
@@ -101,9 +105,6 @@ $(IntermediateDirectory)/main.c$(PreprocessSuffix): main.c
 ## Clean
 ##
 clean:
-	$(RM) ./Debug/*$(ObjectSuffix)
-	$(RM) ./Debug/*$(DependSuffix)
-	$(RM) $(OutputFile)
-	$(RM) "../../../Rig project/.build-debug/shared_mem_read"
+	$(RM) -r ./Debug/
 
 

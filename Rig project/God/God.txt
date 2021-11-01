@@ -1,1 +1,1 @@
-./Debug/main.c.o ./Debug/Helpers.c.o ./Debug/redis_helper.c.o ./Debug/Core.c.o
+./Debug/main.c.o ./Debug/up_up_LIBS_Helpers.c.o ./Debug/up_up_LIBS_redis_helper.c.o ./Debug/up_up_LIBS_Core.c.o
