@@ -69,24 +69,34 @@ int main(int argc, char **argv)
 	while (1) {													// main loop
 		int count = 0;											// zero out names count
 		while (NAMES[count] != NULL) {						    // Cycle the test for interface and dec
-
 			ARG[0] = 0;											// empty arg
+			printf("names [count]  %s \n ",NAMES[count]);
+			fflush(stdout);
 			sprintf (ARG,"%s",NAMES [count]);					// convert number to string
 			if (PIDS[count] == 0) {								// is this the first time through
 				PIDS[count] = reboot_p (ARG);					// Reboot
 			}
-
+			if (errno != 991){ 
 			if (kill (PIDS[count],0) != 0) {					// process  not running
 				PIDS[count] = reboot_p (ARG);					// double check number with redis
 				if (kill (PIDS[count],0) != 0) {				// verify process  not running
 					strcpy(target, "./");						// Add run command to target
 					strcat (target,ARG);						// Add target name to target
-					printf("hello",1);
 					New_process (target,ARG);					// Start new process
 					sleep (1);									// sleep 1 second to make sure new process has started and register with redis
 					PIDS[count] = reboot_p (ARG);				// get new PID number from redis
 				}
 			}
+			}
+			else 
+			{
+			strcpy(target, "./");						// Add run command to target
+					strcat (target,ARG);						// Add target name to target
+					New_process (target,ARG);					// Start new process
+					sleep (1);									// sleep 1 second to make sure new process has started and register with redis
+					PIDS[count] = reboot_p (ARG);				// get new PID number from redis
+									
+		}
 			count ++;
 			sleep (1);
 		}
@@ -100,31 +110,45 @@ int main(int argc, char **argv)
 		rc = sqlite3_exec(db, sql,Callback, 0, &err_msg);
 		closeDB();
 		count = 0;
+		
 		while (count <= (targ_count -1)) {
+			
 			ARG[0] = 0;											// empty arg
 			sprintf (ARG,"%i",targets [count]);					// convert number to string
 			if (PIDSP[count] == 0) {							// is this the first time through
 				PIDSP[count] = reboot_p (ARG);					// Reboot
 			}
+			if (errno != 991){ 
 			if (kill (PIDSP[count],0) != 0) {					// process not running
 				PIDSP[count] = reboot_p (ARG);					// double check number with redis
 				if (kill (PIDSP[count],0) != 0) {				// verify process  not running
 					strcpy(target, "./");						// Add run command to target
 					strcat (target,"Controller");				// Add target name to target
+					fflush(stdout);
 					New_process (target,ARG);					// Start new process
 					sleep (1);									// sleep 1 second to make sure new process has started and register with redis
 					PIDSP[count] = reboot_p (ARG);				// get new PID number from redis
 				}
 			}
+			
+			
+			}else 
+			{
+				strcpy(target, "./");							// Add run command to target
+					strcat (target,"Controller");				// Add target name to target
+					printf("hello %d \n ",4);
+					fflush(stdout);
+					New_process (target,ARG);					// Start new process
+					sleep (1);									// sleep 1 second to make sure new process has started and register with redis
+					PIDSP[count] = reboot_p (ARG);				// get new PID number from redis
+		}
 			count ++;
 			sleep (1);
-
 		}
-
 		fflush(stdout);											// flush stdout ensure that all prints are processed
 		fflush(stderr);											// Flush stdERR
 		sleep (5);												// Wait 5 seconds beforer redoing scan
-	;}
+	}
 	return 1;													// fall through and exit
 }
 /***************
@@ -151,6 +175,6 @@ int  reboot_p (char* Name)
 			i = atoi(RESPONSE);
 		}
 	}
-
+	if (i== 0){errno = 991;}
 	return i;
 }

@@ -5,22 +5,43 @@
   <TabInfoArray Name="TabInfoArray">
     <TabInfo>
       <wxString Value="/home/pi/Desktop/Test_area/Testrig/Rig project/God/main.c" Name="FileName"/>
-      <int Value="82" Name="FirstVisibleLine"/>
-      <int Value="83" Name="CurrentLine"/>
+      <int Value="30" Name="FirstVisibleLine"/>
+      <int Value="180" Name="CurrentLine"/>
+      <wxArrayString Name="Bookmarks"/>
+      <IntVector Name="CollapsedFolds"/>
+    </TabInfo>
+    <TabInfo>
+      <wxString Value="/home/pi/Desktop/Test_area/Testrig/FiFo/fifo/consumer/main.c" Name="FileName"/>
+      <int Value="96" Name="FirstVisibleLine"/>
+      <int Value="108" Name="CurrentLine"/>
       <wxArrayString Name="Bookmarks"/>
       <IntVector Name="CollapsedFolds"/>
     </TabInfo>
     <TabInfo>
       <wxString Value="/home/pi/Desktop/Test_area/Testrig/LIBS/Helpers.c" Name="FileName"/>
-      <int Value="31" Name="FirstVisibleLine"/>
-      <int Value="36" Name="CurrentLine"/>
+      <int Value="0" Name="FirstVisibleLine"/>
+      <int Value="0" Name="CurrentLine"/>
       <wxArrayString Name="Bookmarks"/>
       <IntVector Name="CollapsedFolds"/>
     </TabInfo>
     <TabInfo>
-      <wxString Value="/home/pi/Desktop/Test_area/Testrig/Rig project/Controller/main.c" Name="FileName"/>
-      <int Value="54" Name="FirstVisibleLine"/>
-      <int Value="68" Name="CurrentLine"/>
+      <wxString Value="/home/pi/Desktop/Test_area/Testrig/LIBS/Core.c" Name="FileName"/>
+      <int Value="0" Name="FirstVisibleLine"/>
+      <int Value="0" Name="CurrentLine"/>
+      <wxArrayString Name="Bookmarks"/>
+      <IntVector Name="CollapsedFolds"/>
+    </TabInfo>
+    <TabInfo>
+      <wxString Value="/home/pi/Desktop/Test_area/Testrig/LIBS/redis_helper.c" Name="FileName"/>
+      <int Value="0" Name="FirstVisibleLine"/>
+      <int Value="0" Name="CurrentLine"/>
+      <wxArrayString Name="Bookmarks"/>
+      <IntVector Name="CollapsedFolds"/>
+    </TabInfo>
+    <TabInfo>
+      <wxString Value="/home/pi/Desktop/Test_area/Testrig/FiFo/fifo/consumer/ABE_IoPi.c" Name="FileName"/>
+      <int Value="341" Name="FirstVisibleLine"/>
+      <int Value="96" Name="CurrentLine"/>
       <wxArrayString Name="Bookmarks"/>
       <IntVector Name="CollapsedFolds"/>
     </TabInfo>

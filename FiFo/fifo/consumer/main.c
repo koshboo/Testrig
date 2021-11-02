@@ -5,6 +5,7 @@
 #include <sys/types.h>
 #include <unistd.h>
 #include <stdlib.h>
+#include <stdint.h>
 #include <errno.h>
 #include "../../../LIBS/Helpers.h"
 #include <sqlite3.h>
@@ -14,13 +15,14 @@
 #include <signal.h>
 #include <time.h>
 
+
 int Callback(void *a_param, int argc, char **argv, char **column);
 int Csqlop (char* sql);
 char *ch;
 int 	targets [100];
 int 	targets2 [100] = {-1};
 char 	ch_arr[20][3];
-int 	in_arr [10];
+uint8_t 	in_arr [10];
 int 	tag_count;
 char 	*err_msg = 0;
 char	OP[1];
@@ -49,12 +51,17 @@ printf ("kill %d ",0);
 fflush (stdout);
 	i = getpid ();															// Get PID of this program
 	Rseti("DEC",i);															// set DEC pid in redis
-	//IOPI_init(0x26,1);
-	//IOPI_init(0x20,1);
+	IOPi_init(0x26,1);
+	IOPi_init(0x20,1);
+	set_port_direction (0x26,1,0);
+	set_port_direction (0x26,0,0);
+	set_port_direction (0x20,1,0);
+	set_port_direction (0x20,0,0);
+	write_pin (0x20,3,1);
 	char name [] = "fifo";
 	strcpy(name,"DEC");									// copy The file name to temporary variable
 	strcat(name,".LOG");								// Add .err to the filename for the error log
-	//freopen( name, "a", stdout );
+	freopen( name, "a", stdout );
 	char Temp_Arry[50];									// temprary array for multiple things
 	char pipein  [30][30];								// reader pipe text name
 	int F_HANDR [30] = {-1};							// reader file handles
@@ -66,8 +73,7 @@ fflush (stdout);
 	if (Csqlop (sql) != 0) {
 		exit (1);
 	};
-		printf ("kill %d ",tag_count);
-		fflush(stdout);
+
 	for (i = 0; i < tag_count ; i++) {
 		errno = 0;
 		
@@ -80,7 +86,6 @@ fflush (stdout);
 			close (F_HANDR[i]);											// close handle
 			if (ch != NULL) {											// was the process id found?
 				kill (atoi (ch),SIGUSR1);								// send NOK signal to make the program repeat last statement
-				printf ("kill %s ",ch);
 			}
 			
 
@@ -97,16 +102,24 @@ fflush (stdout);
 			if (access (pipein[i],F_OK)== 0) {
 				F_HANDR[i] = open (pipein[i],O_RDONLY|O_NONBLOCK);		// open first fifo
 				tt = read (F_HANDR[i],Temp_Arry,50);					// empty the pipe (read all that is in there)
-
+				int cmd_num;
+				cmd_num =0;
 				if (tt > 1) {											// did we rea more than 1 byte
-					ch = strtok(Temp_Arry, ",");						// split off the PID of the sender
-					if (ch != NULL) {									// was the pid found
-						printf("SIGNAL GEN======%d==========  %s \n",targets[i],ch); // REMOVE before deploy
+
+				ch = strtok(Temp_Arry," ");						// Split line into part
+				char* token = strtok(NULL," ");					// next token
+				while (token != NULL) 	{						// Repeated split
+				in_arr[cmd_num] = strtol(token, NULL, 16);
+				token = strtok(NULL," ");					// next token
+				++ cmd_num;									// increment cmd
+				}
+						printf("SIGNAL GEN======%d %d %d ========== %s   \n",in_arr [0],in_arr [1],in_arr [2],ch); // REMOVE before deploy
 						//**************************************************************************************
 						//**Insert  harware control here
+						write_pin (in_arr [0],in_arr [1],in_arr [2]);
 						//**************************************************************************************
 						kill (atoi (ch),SIGINT);					// send signal that the work was done
-					}
+					
 				}
 				if (tt == -1 ) {										// if error occured
 					printf("error %d = %s  read = %d bytes @ %d \n",errno,strerror(errno),tt,targets[i]);	// output error

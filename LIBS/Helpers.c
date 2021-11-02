@@ -38,7 +38,7 @@ char* Add_intostr (char* S,int I)	// Add int to end of string
 void New_process (char* Name,char* Argval)		// generate new process
 {
 	int status;
-	char* parmList[] = {NULL, Argval, NULL}; //  param list mus be NULL terminated first value is irrelervent
+	char* parmList[] = {"", Argval, NULL}; //  param list mus be NULL terminated first value is irrelervent
 	pid_t pid;
 	pid = fork();
 	if (pid == 0) {				// child process
@@ -46,7 +46,7 @@ void New_process (char* Name,char* Argval)		// generate new process
 		if (pid == 0) {			// Grand child process
 			int t;
 			t = 0;
-			printf (" Attempting to start %s \n",Argval);
+			printf (" Attempting to start %s %s \n",Name,Argval);
 			fflush (stdout);
 			t = execv (Name,parmList);
 			if (t < 0) {
