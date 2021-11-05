@@ -36,8 +36,6 @@ char temp1[20];
 int main(int argc, char **argv)
 {
 	int i;																	// temporary variable
-	printf ("kill %d ",0);
-	fflush(stdout);
 	RESPONSE = Rget ("DEC");												// Get redis key "DEC" value
 	if (RESPONSE != NULL) {													// Has redis returned a value
 		i = atoi(RESPONSE);													// if reply is not null then convert to integer
@@ -47,17 +45,15 @@ int main(int argc, char **argv)
 			}
 		}
 	}
-printf ("kill %d ",0);
-fflush (stdout);
 	i = getpid ();															// Get PID of this program
 	Rseti("DEC",i);															// set DEC pid in redis
-	IOPi_init(0x26,1);
+	IOPi_init(0x26,1);			// init ports
 	IOPi_init(0x20,1);
-	set_port_direction (0x26,1,0);
+	set_port_direction (0x26,1,0);				// set port directions
 	set_port_direction (0x26,0,0);
 	set_port_direction (0x20,1,0);
 	set_port_direction (0x20,0,0);
-	write_pin (0x20,3,1);
+	write_pin (0x20,3,1);						// set master arm for rams
 	char name [] = "fifo";
 	strcpy(name,"DEC");									// copy The file name to temporary variable
 	strcat(name,".LOG");								// Add .err to the filename for the error log
@@ -76,7 +72,6 @@ fflush (stdout);
 
 	for (i = 0; i < tag_count ; i++) {
 		errno = 0;
-		
 		sprintf(pipein[i] ,"pipes/to_DEC.%d",targets[i]);				// set file names for the pipes
 		if (access (pipein[i],F_OK)== 0) {								// does a file exist for this process
 			F_HANDR[i] = open (pipein[i],O_RDONLY|O_NONBLOCK);			// open first fifo
@@ -100,7 +95,7 @@ fflush (stdout);
 			strcpy (Temp_Arry,"");
 			tt = 0;
 			if (access (pipein[i],F_OK)== 0) {
-				F_HANDR[i] = open (pipein[i],O_RDONLY|O_NONBLOCK);		// open first fifo
+				F_HANDR[i] = open (pipein[i],O_RDONLY);		// open first fifo
 				tt = read (F_HANDR[i],Temp_Arry,50);					// empty the pipe (read all that is in there)
 				int cmd_num;
 				cmd_num =0;
@@ -113,18 +108,34 @@ fflush (stdout);
 				token = strtok(NULL," ");					// next token
 				++ cmd_num;									// increment cmd
 				}
-						printf("SIGNAL GEN======%d %d %d ========== %s   \n",in_arr [0],in_arr [1],in_arr [2],ch); // REMOVE before deploy
+				remove (pipein[i]);
+						//printf("SIGNAL GEN======%d %d %d ========== %s   \n",in_arr [0],in_arr [1],in_arr [2],ch); // REMOVE before deploy
 						//**************************************************************************************
 						//**Insert  harware control here
 						write_pin (in_arr [0],in_arr [1],in_arr [2]);
+						//
 						//**************************************************************************************
 						kill (atoi (ch),SIGINT);					// send signal that the work was done
 					
 				}
+				time (&Current_time);
 				if (tt == -1 ) {										// if error occured
 					printf("error %d = %s  read = %d bytes @ %d \n",errno,strerror(errno),tt,targets[i]);	// output error
 					printf("file target specs :- \n  name == %d \n Handle == %d \n ",targets[i],F_HANDR[i]);					// file details
+					printf("Time -- %s \n",asctime(localtime(&Current_time)));
 					fflush (stdout);														// flush output
+					cl = targets[i];
+					sprintf(temp1,"%d",cl);
+					RESPONSE = Rget (temp1);
+					if (RESPONSE != NULL) {													// Has redis returned a value
+					i = atoi(RESPONSE);													// if reply is not null then convert to integer
+					if (i != 0 ) {														// Check if convertion worked
+					if (kill (i,0) == 0) {
+						kill(i,SIGUSR1);												// send NOK signal to program
+					}
+		}
+	}
+					
 				}
 
 				if (tt == 0 ) {																// zero bytes returned
@@ -141,16 +152,17 @@ fflush (stdout);
 				close (F_HANDR[i]);															// close file
 			}
 		}
-		sleep (1);
-
+		//sleep (1);
+		usleep (10);
+		time (&Current_time);
 /// re scan for changes in the programs
 		seconds = (Current_time - Crefresh_time);
 		if (seconds > 60 ) {
 		tag_count = 0;
 		char *sql = "SELECT ID FROM Programs where status = 'Active'"; 						// get all 'active' programs
 		if (Csqlop (sql) != 0) {
-		exit (1);
-	};		
+		exit (1);}
+		time (&Crefresh_time);
 		}
 
 

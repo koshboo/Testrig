@@ -70,8 +70,7 @@ int main(int argc, char **argv)
 		int count = 0;											// zero out names count
 		while (NAMES[count] != NULL) {						    // Cycle the test for interface and dec
 			ARG[0] = 0;											// empty arg
-			printf("names [count]  %s \n ",NAMES[count]);
-			fflush(stdout);
+
 			sprintf (ARG,"%s",NAMES [count]);					// convert number to string
 			if (PIDS[count] == 0) {								// is this the first time through
 				PIDS[count] = reboot_p (ARG);					// Reboot
@@ -136,8 +135,6 @@ int main(int argc, char **argv)
 			{
 				strcpy(target, "./");							// Add run command to target
 					strcat (target,"Controller");				// Add target name to target
-					printf("hello %d \n ",4);
-					fflush(stdout);
 					New_process (target,ARG);					// Start new process
 					sleep (1);									// sleep 1 second to make sure new process has started and register with redis
 					PIDSP[count] = reboot_p (ARG);				// get new PID number from redis

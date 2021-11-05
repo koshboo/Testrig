@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Session Name="/home/pi/Desktop/Test_area/Testrig/Rig project/Rig project.workspace">
-  <int Value="1" Name="m_selectedTab"/>
+  <int Value="0" Name="m_selectedTab"/>
   <wxString Value="/home/pi/Desktop/Test_area/Testrig/Rig project/Rig project.workspace" Name="m_workspaceName"/>
   <TabInfoArray Name="TabInfoArray">
     <TabInfo>
-      <wxString Value="/home/pi/Desktop/Test_area/Testrig/Rig project/God/main.c" Name="FileName"/>
-      <int Value="30" Name="FirstVisibleLine"/>
-      <int Value="180" Name="CurrentLine"/>
+      <wxString Value="/home/pi/Desktop/Test_area/Testrig/Rig project/Controller/main.c" Name="FileName"/>
+      <int Value="203" Name="FirstVisibleLine"/>
+      <int Value="256" Name="CurrentLine"/>
       <wxArrayString Name="Bookmarks"/>
       <IntVector Name="CollapsedFolds"/>
     </TabInfo>
     <TabInfo>
-      <wxString Value="/home/pi/Desktop/Test_area/Testrig/FiFo/fifo/consumer/main.c" Name="FileName"/>
-      <int Value="96" Name="FirstVisibleLine"/>
-      <int Value="108" Name="CurrentLine"/>
+      <wxString Value="/home/pi/Desktop/Test_area/Testrig/Rig project/God/main.c" Name="FileName"/>
+      <int Value="71" Name="FirstVisibleLine"/>
+      <int Value="72" Name="CurrentLine"/>
       <wxArrayString Name="Bookmarks"/>
       <IntVector Name="CollapsedFolds"/>
     </TabInfo>
@@ -25,23 +25,9 @@
       <IntVector Name="CollapsedFolds"/>
     </TabInfo>
     <TabInfo>
-      <wxString Value="/home/pi/Desktop/Test_area/Testrig/LIBS/Core.c" Name="FileName"/>
-      <int Value="0" Name="FirstVisibleLine"/>
-      <int Value="0" Name="CurrentLine"/>
-      <wxArrayString Name="Bookmarks"/>
-      <IntVector Name="CollapsedFolds"/>
-    </TabInfo>
-    <TabInfo>
-      <wxString Value="/home/pi/Desktop/Test_area/Testrig/LIBS/redis_helper.c" Name="FileName"/>
-      <int Value="0" Name="FirstVisibleLine"/>
-      <int Value="0" Name="CurrentLine"/>
-      <wxArrayString Name="Bookmarks"/>
-      <IntVector Name="CollapsedFolds"/>
-    </TabInfo>
-    <TabInfo>
-      <wxString Value="/home/pi/Desktop/Test_area/Testrig/FiFo/fifo/consumer/ABE_IoPi.c" Name="FileName"/>
-      <int Value="341" Name="FirstVisibleLine"/>
-      <int Value="96" Name="CurrentLine"/>
+      <wxString Value="/home/pi/Desktop/Test_area/Testrig/FiFo/fifo/consumer/main.c" Name="FileName"/>
+      <int Value="157" Name="FirstVisibleLine"/>
+      <int Value="155" Name="CurrentLine"/>
       <wxArrayString Name="Bookmarks"/>
       <IntVector Name="CollapsedFolds"/>
     </TabInfo>

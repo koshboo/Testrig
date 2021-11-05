@@ -64,10 +64,6 @@ linesd = 0;
 	FILE *fp;
 	double seconds;
 	char file_location [70];
-	strcpy(file_location,"Programs/controller.log");
-	fp = fopen(file_location, "a");
-	fputs ("started \n",fp);
-	fclose(fp);
 	// locate and load file
 	
 	strcpy(file_location,"Programs/");
@@ -145,8 +141,6 @@ linesd = 0;
 	/* MAIN PROGRAM LOOP*/
 	while ( stata == 0 ) {						   				// loop until the count = target count
 		linesd = 0;
-		printf ("before for active done \n %d",0);
-		fflush (stdout);
 		sprintf (temp,"SELECT Status,target FROM Programs where ID = %s",argv[1]);
 		sql = temp; 												// copy query into the correct format
 		writeDB(sql,count);												// open DB Process query and close.
@@ -158,10 +152,8 @@ linesd = 0;
 	
 		/* break the program line into chunks for processing*/
 		time(&oldtime);										// start time for cycle timing
-		printf ("start of cycle %d",0);
-		fflush (stdout);
 		while (L_Number <= PL_Number) {						// while line number is lower than program lines
-			debug
+	
 			mkfifo (myfifo,0666);							// create the fifo file
 			errno = 0;										// clear the error code
 			Cfile1 = open (myfifo, O_RDWR);					// open the fifo
@@ -200,18 +192,17 @@ linesd = 0;
 				arr[strlen(arr)] = 0;									// add zero term to array
 				tt = write (Cfile1,arr,strlen(arr)+1);					// write command to pipe
 				while (tt < 0 ) {										// was there an error
-					sleep (1);											// wait 1 second
+					usleep (100);											// wait 1 second
 					tt = write (Cfile1,arr,strlen(arr)+1);				// retry after 1 second
 				}
 
 // wait for signal
 				sig = 0;												// reset the signal flag
 				while (sig == 0 ) {										// while the signal flag is 0 loop
-					usleep (1000);										// sleep for 1 second
-
+					usleep (1);										// sleep for 1 second
 				}
 				close (Cfile1);											// close the fifo file
-				remove (myfifo);										// delete fifo file to tell DEC no other meassages
+														// delete fifo file to tell DEC no other meassages
 				float f = atof (cmd[4]);								// convert cmd[4] to float
 				f = f * 1000000000;										// times second by 1,000,000,000 to get nanoseconds
 				unsigned long long int s = f;							// convert float to long long iunsigned int
@@ -252,7 +243,7 @@ linesd = 0;
 		seconds = difftime(newtime,regtime); // how long since the last update to the sql database
 
 		if (seconds > 60) {
-			debug;
+		
 			// get current time;
 			seconds = difftime(newtime,oldtime);						// how long did it take to do the cycle
 			int targettime = (target - count)			 ;				// Calculate time to finish
@@ -263,6 +254,7 @@ linesd = 0;
 			s[strcspn(s,"\n")]= '\0';
 			sprintf (temp,"UPDATE Programs SET count = %i, EST_Finish_date = '%s' WHERE ID = %s ",count, s,argv[1]); // Create string for update
 			
+
 			char *sql = (temp); 									//
 			writeDB(sql,count);											// open DB Process query and close.
 			
@@ -283,7 +275,7 @@ linesd = 0;
 		count = count - 1;
 	}									// remove the extra count from count
 	printf ("target %d    count %d    Stata %d \n",target,count,stata);
-	debug;
+
 	sprintf (temp,"UPDATE Programs SET count = %d  WHERE ID = %s \n",count,argv[1]); // Create string for update
 	sql = (temp);
 	writeDB(sql,count);											// open DB Process query and close.
@@ -302,8 +294,6 @@ void writeDB(char *sql, int c)
 	}
 		sqlite3_busy_timeout (db,2000);
 		rc = sqlite3_exec(db,sql,Callback, 0, &err_msg);   	    // if db open do the write
-		printf ("check for active done \n %d",0);
-		fflush(stdout);
 		if (rc != SQLITE_OK) {									// if the operation complete with out error
 			fprintf(stderr," dbase error %s  \n",err_msg);
 			fprintf(stderr," Output %s  \n",sql);
