@@ -28,7 +28,7 @@ int target;
 int sig;
 int  L_Number;
 
-time_t oldtime,newtime,regtime,tartime,aron_time;
+time_t oldtime,newtime,regtime,tartime,aron_time,breaktime,breaktime1;
 struct timespec tim,tim2;
 struct sqlret {
 	char sqlret[200];
@@ -41,7 +41,6 @@ void SIG_OK (int signum)
 }
 void SIG_NOK (int signum)
 {
-
 	sig = 2;
 }
 int main(int argc, char **argv)
@@ -101,7 +100,7 @@ linesd = 0;
 	sprintf (temp,"SELECT Status,target,count FROM Programs where ID = %s",argv[1]); // form the sql query
 	char *sql = (temp); 											// copy query into the correct format
 	writeDB (sql,0);													// open DB Process query and close.
-	
+	if (count >= target) {stata = 10;}
 
 	if (stata == 0) {
 		time (&newtime);
@@ -192,17 +191,21 @@ linesd = 0;
 				arr[strlen(arr)] = 0;									// add zero term to array
 				tt = write (Cfile1,arr,strlen(arr)+1);					// write command to pipe
 				while (tt < 0 ) {										// was there an error
-					usleep (100);											// wait 1 second
+					usleep (1000);										// wait 1 second
 					tt = write (Cfile1,arr,strlen(arr)+1);				// retry after 1 second
 				}
 
 // wait for signal
 				sig = 0;												// reset the signal flag
+				time (&breaktime);
 				while (sig == 0 ) {										// while the signal flag is 0 loop
-					usleep (1);										// sleep for 1 second
-				}
+					time (&breaktime1);
+					usleep (100);  										// sleep for 0.1 second
+				seconds = difftime(breaktime1,breaktime);
+				if (seconds > 10 ) {sig = 2;}
+			}
+				
 				close (Cfile1);											// close the fifo file
-														// delete fifo file to tell DEC no other meassages
 				float f = atof (cmd[4]);								// convert cmd[4] to float
 				f = f * 1000000000;										// times second by 1,000,000,000 to get nanoseconds
 				unsigned long long int s = f;							// convert float to long long iunsigned int
@@ -253,8 +256,6 @@ linesd = 0;
 			s = asctime(gmtime(&tartime));
 			s[strcspn(s,"\n")]= '\0';
 			sprintf (temp,"UPDATE Programs SET count = %i, EST_Finish_date = '%s' WHERE ID = %s ",count, s,argv[1]); // Create string for update
-			
-
 			char *sql = (temp); 									//
 			writeDB(sql,count);											// open DB Process query and close.
 			
@@ -264,6 +265,7 @@ linesd = 0;
 		}
 		L_Number = 0;												// zero line number
 		count ++;													// increase count
+		if (target == 0) {count = 0;} // special case for infinite 
 		if (count > target) {
 			stata= 2;
 		};									// Set break out condition if count = target
@@ -274,14 +276,19 @@ linesd = 0;
 	if (stata == 2) {
 		count = count - 1;
 	}									// remove the extra count from count
-	printf ("target %d    count %d    Stata %d \n",target,count,stata);
-
+	//printf ("target %d    count %d    Stata %d \n",target,count,stata);
+	if (stata != 10) 
+	{
 	sprintf (temp,"UPDATE Programs SET count = %d  WHERE ID = %s \n",count,argv[1]); // Create string for update
 	sql = (temp);
 	writeDB(sql,count);											// open DB Process query and close.
 	time (&tartime);
-	printf ("Stopped - %s ,%d ",asctime(localtime(&tartime)),stata);	// Log Stop time
-	fflush (stdout);
+	
+	printf ("Stopped - %s \n %s",asctime(localtime(&tartime)), temp);	// Log Stop time
+	fflush (stdout);}
+	sprintf (temp,"UPDATE Programs SET Status = 'Completed' WHERE ID = %s \n",argv[1]); // Create string for update
+	sql = (temp);
+	writeDB(sql,count);
 	return 0;												// Terminate program
 }// TODO help
 
@@ -316,8 +323,12 @@ int Callback(void *a_param, int argc, char **argv, char **column)
 	}
 	
 	if (argv [0] != NULL) {
-		stata = (strcmp(argv[0],"Active"));									// Argument 0 is the status value
-	}
+		//stata = (strcmp(argv[0],"Active"));									// Argument 0 is the status value
+	stata = 5;
+	if ((strcmp(argv[0],"Active")) == 0) {stata = 0;}
+	if ((strcmp(argv[0],"Paused")) == 0) {stata = 3;}
+	if ((strcmp(argv[0],"Completed")) == 0) {stata = 4;}
 	
+	}
 	return 0;
 }

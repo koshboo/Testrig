@@ -70,7 +70,7 @@ char* Rget (char* Name)
 	{
 	sleep (5);								// if attempt fails wait 5 second and try again
 	}
-	
+	char* st;
 	char temp[100] = "";
 	reply = NULL;
 	sprintf(temp,"get %s",Name);
@@ -81,7 +81,6 @@ char* Rget (char* Name)
 		fflush(stderr);
 	}
 	redisFree(c);
-	char* st;
 	if (reply == NULL)
 	{
 	st ="";

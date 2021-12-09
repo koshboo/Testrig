@@ -1,26 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CodeLite_Workspace Name="Rig project" Database="" Version="10.0.0">
-  <Project Name="God" Path="God/God.project" Active="Yes"/>
+  <Project Name="God" Path="God/God.project" Active="No"/>
   <Environment>
     <![CDATA[]]>
   </Environment>
-  <Project Name="Controller" Path="Controller/Controller.project" Active="No"/>
+  <Project Name="Controller" Path="Controller/Controller.project" Active="Yes"/>
   <Project Name="shared_mem_read" Path="../FiFo/fifo/shared_mem_read/shared_mem_read.project" Active="No"/>
   <Project Name="DEC" Path="../FiFo/fifo/consumer/consumer.project" Active="No"/>
   <BuildMatrix>
     <WorkspaceConfiguration Name="Debug" Selected="yes">
-      <Project Name="God" ConfigName="Debug"/>
-      <Project Name="Controller" ConfigName="Debug"/>
+      <Environment/>
       <Project Name="shared_mem_read" ConfigName="Debug"/>
+      <Project Name="God" ConfigName="Debug"/>
       <Project Name="DEC" ConfigName="Debug"/>
+      <Project Name="Controller" ConfigName="Debug"/>
     </WorkspaceConfiguration>
     <WorkspaceConfiguration Name="Release" Selected="yes">
+      <Environment/>
       <Project Name="God" ConfigName="Release"/>
       <Project Name="Controller" ConfigName="Release"/>
       <Project Name="shared_mem_read" ConfigName="Release"/>
       <Project Name="DEC" ConfigName="Release"/>
     </WorkspaceConfiguration>
     <WorkspaceConfiguration Name="Alpha" Selected="yes">
+      <Environment/>
       <Project Name="God" ConfigName="Debug"/>
       <Project Name="Controller" ConfigName="Debug"/>
       <Project Name="shared_mem_read" ConfigName="Debug"/>

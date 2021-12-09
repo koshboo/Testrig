@@ -172,6 +172,7 @@ type
       var Handled: Boolean);
     procedure Sheet_ProgramsContextPopup(Sender: TObject; MousePos: TPoint;
       var Handled: Boolean);
+    procedure StorageChange(Sender: TObject);
 
     procedure Tab_ManagerChange(Sender: TObject);
     procedure remove_lineClick(Sender: TObject);
@@ -377,6 +378,11 @@ begin
 
 end;
 
+procedure TForm1.StorageChange(Sender: TObject);
+begin
+
+end;
+
 procedure TForm1.remove_lineClick(Sender: TObject);
 // remove the selected line
 var
@@ -496,7 +502,7 @@ begin
   userstring := '';
   While (userstring = '') do
   begin
-       InputQuery('Question', 'Type in some data', UserString) ;
+       InputQuery('Reason ', 'What is the reason for stopping the test', UserString) ;
 end;
 
   hold := dbgrid1.DataSource.DataSet.RecNo;
@@ -523,7 +529,7 @@ end;
     Program_catagory.Text + '"');    // update the displayed data
   SetDBCols;
   // set column widths
-  dbgrid1.DataSource.DataSet.RecNo := hold - 1;
+  if (hold > 1) then  dbgrid1.DataSource.DataSet.RecNo := hold - 1;
   // set the marker to the record above the one we just paused
 
 end;
@@ -985,12 +991,10 @@ var
 begin
   test := dbGrid1.DataSource.DataSet.Fields[0].AsString;
   if fileexists(Base + 'Programs/Logs/' + test + '.log') then
-    memo4.Lines.LoadFromFile(Base + 'Programs/Logs/' + test + '.log')
-  else
   begin
-    if (directoryexists(Base + 'Programs/Logs/')) then
-      memo4.Lines.SaveToFile(Base + 'Programs/Logs/' + test + '.log');
-  end;
+    memo4.Lines.Clear;
+    memo4.Lines.LoadFromFile(Base + 'Programs/Logs/' + test + '.log');
+  end
 end;
 
 procedure TForm1.DBGrid3CellClick();

@@ -27,6 +27,8 @@ int done;
 char target[100];					// Array containing name of file to start
 char ARG[100];						// Array containing argiuments to send to file
 char *err_msg = 0;
+char Start_FLAG = 0;
+	int loop_count = 0;
 
 int main(int argc, char **argv)
 {
@@ -67,38 +69,53 @@ int main(int argc, char **argv)
 	*********************************************************************************************************/
 
 	while (1) {													// main loop
-		int count = 0;											// zero out names count
+	
+	int count = 0;											// zero out names count
 		while (NAMES[count] != NULL) {						    // Cycle the test for interface and dec
 			ARG[0] = 0;											// empty arg
-
 			sprintf (ARG,"%s",NAMES [count]);					// convert number to string
-			if (PIDS[count] == 0) {								// is this the first time through
-				PIDS[count] = reboot_p (ARG);					// Reboot
+			loop_count = 0;
+			Start_FLAG = 0;
+			if (PIDS[count] == 0) {								// First time around;
+				loop_count = 0;
+				while ((PIDS[count] == 0)||(loop_count < 5)) {	// Loop while redis reports error
+				PIDS[count] = reboot_p (ARG);					// Get updated pid from redis
+				sleep(1);
+				loop_count ++;
+				}
+				
+				if (PIDS[count] > 0){
+				if (kill (PIDS[count],0) != 0) {Start_FLAG = 1;}// If new pid is still not valid
+				if (PIDS[count] < 0){Start_FLAG = 1;}
 			}
-			if (errno != 991){ 
-			if (kill (PIDS[count],0) != 0) {					// process  not running
-				PIDS[count] = reboot_p (ARG);					// double check number with redis
-				if (kill (PIDS[count],0) != 0) {				// verify process  not running
-					strcpy(target, "./");						// Add run command to target
-					strcat (target,ARG);						// Add target name to target
-					New_process (target,ARG);					// Start new process
-					sleep (1);									// sleep 1 second to make sure new process has started and register with redis
-					PIDS[count] = reboot_p (ARG);				// get new PID number from redis
+			} // end of first time
+			if (Start_FLAG == 0){								// is it already flagged to start?
+			if (kill (PIDS[count],0) != 0) 						// is currunt PID valid
+			{													// NO
+				loop_count = 0;
+				while ((PIDS[count] == 0)||(loop_count < 5)) {	// Loop while redis reports error
+				PIDS[count] = reboot_p (ARG);					// Get updated pid from redis
+				sleep(1);
+				loop_count ++;
+				}
+				if (PIDS[count] < 0){Start_FLAG = 1;}			// has redis returned null
+				if (PIDS[count] > 0){
+				if (kill (PIDS[count],0) != 0) {Start_FLAG = 1;}// If new pid is still not valid
 				}
 			}
 			}
-			else 
-			{
-			strcpy(target, "./");						// Add run command to target
-					strcat (target,ARG);						// Add target name to target
-					New_process (target,ARG);					// Start new process
-					sleep (1);									// sleep 1 second to make sure new process has started and register with redis
-					PIDS[count] = reboot_p (ARG);				// get new PID number from redis
-									
-		}
+
+			if (Start_FLAG != 0) {
+				strcpy(target, "./");				// Add run command to target
+				strcat (target,ARG);				// Add target name to target
+				New_process (target,ARG);			// Start new process
+				sleep (5);							// sleep 1 second to make sure new process has started and register with redis
+				PIDS[count] = reboot_p (ARG);		// get new PID number from redis
+				}
 			count ++;
-			sleep (1);
+			sleep (5);
 		}
+		
 
 		/********************************************************************************
 			interface checks are done now move on to the programs that should be running
@@ -109,42 +126,53 @@ int main(int argc, char **argv)
 		rc = sqlite3_exec(db, sql,Callback, 0, &err_msg);
 		closeDB();
 		count = 0;
-		
 		while (count <= (targ_count -1)) {
-			
+		loop_count = 0;
+		Start_FLAG = 0;	
 			ARG[0] = 0;											// empty arg
 			sprintf (ARG,"%i",targets [count]);					// convert number to string
-			if (PIDSP[count] == 0) {							// is this the first time through
-				PIDSP[count] = reboot_p (ARG);					// Reboot
-			}
-			if (errno != 991){ 
-			if (kill (PIDSP[count],0) != 0) {					// process not running
-				PIDSP[count] = reboot_p (ARG);					// double check number with redis
-				if (kill (PIDSP[count],0) != 0) {				// verify process  not running
-					strcpy(target, "./");						// Add run command to target
-					strcat (target,"Controller");				// Add target name to target
-					fflush(stdout);
-					New_process (target,ARG);					// Start new process
-					sleep (1);									// sleep 1 second to make sure new process has started and register with redis
-					PIDSP[count] = reboot_p (ARG);				// get new PID number from redis
+			
+			if (PIDSP[count] >  0){								// Redis returned  non zero number
+				if (kill (PIDSP[count],0) != 0) 				// is currunt PID valid
+			{													// NO
+				loop_count = 0;
+				while ((PIDSP[count] == 0)||(loop_count < 5)) {
+				PIDSP[count] = reboot_p (ARG);					// Get updated pid from redis
+				sleep(1);
+				loop_count ++;
+				}
+				if (PIDSP[count] != 0){
+				if (kill (PIDSP[count],0) != 0) {Start_FLAG = 1;}// If new pid is still not valid
 				}
 			}
+			}
 			
-			
-			}else 
+			else
+				
 			{
+				while ((PIDSP[count] == 0)||(loop_count < 5)) {	// Loop while redis reports error
+				PIDSP[count] = reboot_p (ARG);					// Get updated pid from redis
+				sleep(1);
+				loop_count ++;
+				};
+				}
+			
+			if (PIDSP[count] < 0){Start_FLAG = 1;printf ("null %i \n",PIDSP[count]);
+	fflush(stdout);}				// redis returned null
+			if (Start_FLAG != 0) {
 				strcpy(target, "./");							// Add run command to target
-					strcat (target,"Controller");				// Add target name to target
-					New_process (target,ARG);					// Start new process
-					sleep (1);									// sleep 1 second to make sure new process has started and register with redis
-					PIDSP[count] = reboot_p (ARG);				// get new PID number from redis
-		}
+				strcat (target,"Controller");					// Add target name to target
+				New_process (target,ARG);						// Start new process
+				sleep (5);										// sleep 1 second to make sure new process has started and register with redis
+				PIDSP[count] = reboot_p (ARG);					// get new PID number from redis
+				Start_FLAG = 0;
+				}
 			count ++;
 			sleep (1);
-		}
 		fflush(stdout);											// flush stdout ensure that all prints are processed
 		fflush(stderr);											// Flush stdERR
 		sleep (5);												// Wait 5 seconds beforer redoing scan
+	}
 	}
 	return 1;													// fall through and exit
 }
@@ -166,12 +194,18 @@ int  reboot_p (char* Name)
 
 	int i;
 	i = 0;
+	errno = 0;															// reset errono
+	
 	RESPONSE = Rget (Name);												// check redis for name
 	if (RESPONSE != NULL) {												// if reply is NOT null then the PID does exist in redis
-		if ((RESPONSE != 0 ) && (strstr(RESPONSE, "ERR") == NULL)) { // if response is not 0 and not Err
+		if ((RESPONSE != 0 ) && (strstr(RESPONSE, "ERR") == NULL)) {	// if response is not 0 and not Err
 			i = atoi(RESPONSE);
 		}
 	}
-	if (i== 0){errno = 991;}
+	if (RESPONSE == NULL) {i = -1;
+	printf ("null %i \n",1);
+	fflush(stdout);
+	
+	}
 	return i;
 }

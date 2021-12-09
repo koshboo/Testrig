@@ -168,6 +168,8 @@ type
     procedure MOve_downClick(Sender: TObject);
     procedure Move_upClick(Sender: TObject);
     procedure apply_update(mode: TUpdateMode);
+    procedure Sheet_loginContextPopup(Sender: TObject; MousePos: TPoint;
+      var Handled: Boolean);
     procedure Sheet_ProgramsContextPopup(Sender: TObject; MousePos: TPoint;
       var Handled: Boolean);
 
@@ -253,9 +255,7 @@ begin
   end
   else
   begin
-    Application.MessageBox('Config file missing ' + slinebreak +
-      'Please contact TECHNICAL for assistance', 'Fatal error', BoxStyle);
-    application.Terminate;
+             base := extractfiledir(paramstr(0)) ;
     // terminate application you cannot start without a config
   end;
   Program_sl := TStringList.Create;
@@ -363,6 +363,12 @@ begin
   SQLQuery1.Close();
   SQLQuery1.Open();
   SQLTransaction1.CommitRetaining;
+end;
+
+procedure TForm1.Sheet_loginContextPopup(Sender: TObject; MousePos: TPoint;
+  var Handled: Boolean);
+begin
+
 end;
 
 procedure TForm1.Sheet_ProgramsContextPopup(Sender: TObject; MousePos: TPoint;
@@ -490,7 +496,7 @@ begin
   userstring := '';
   While (userstring = '') do
   begin
-       InputQuery('Question', 'Type in some data', UserString) ;
+       InputQuery('Reason ', 'What is the reason for stopping the test', UserString) ;
 end;
 
   hold := dbgrid1.DataSource.DataSet.RecNo;
@@ -517,7 +523,7 @@ end;
     Program_catagory.Text + '"');    // update the displayed data
   SetDBCols;
   // set column widths
-  dbgrid1.DataSource.DataSet.RecNo := hold - 1;
+  if (hold > 1) then  dbgrid1.DataSource.DataSet.RecNo := hold - 1;
   // set the marker to the record above the one we just paused
 
 end;
@@ -979,9 +985,13 @@ var
 begin
   test := dbGrid1.DataSource.DataSet.Fields[0].AsString;
   if fileexists(Base + 'Programs/Logs/' + test + '.log') then
-    memo4.Lines.LoadFromFile(Base + 'Programs/Logs/' + test + '.log')
+  begin
+     memo4.Lines.Clear;
+    memo4.Lines.LoadFromFile(Base + 'Programs/Logs/' + test + '.log');
+  end
   else
   begin
+    memo4.Lines.Clear;
     if (directoryexists(Base + 'Programs/Logs/')) then
       memo4.Lines.SaveToFile(Base + 'Programs/Logs/' + test + '.log');
   end;

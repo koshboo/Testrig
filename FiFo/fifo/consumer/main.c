@@ -92,8 +92,10 @@ int main(int argc, char **argv)
 	time (&Crefresh_time);
 	while (1) {
 		for (i = 0; i < tag_count  ; i++) {								// Loop through all numbers
+			sprintf(pipein[i] ,"pipes/to_DEC.%d",targets[i]);				// set file names for the pipes
 			strcpy (Temp_Arry,"");
 			tt = 0;
+		
 			if (access (pipein[i],F_OK)== 0) {
 				F_HANDR[i] = open (pipein[i],O_RDONLY);		// open first fifo
 				tt = read (F_HANDR[i],Temp_Arry,50);					// empty the pipe (read all that is in there)
@@ -128,10 +130,10 @@ int main(int argc, char **argv)
 					sprintf(temp1,"%d",cl);
 					RESPONSE = Rget (temp1);
 					if (RESPONSE != NULL) {													// Has redis returned a value
-					i = atoi(RESPONSE);													// if reply is not null then convert to integer
-					if (i != 0 ) {														// Check if convertion worked
-					if (kill (i,0) == 0) {
-						kill(i,SIGUSR1);												// send NOK signal to program
+					int t = atoi(RESPONSE);													// if reply is not null then convert to integer
+					if (t != 0 ) {														// Check if convertion worked
+					if (kill (t,0) == 0) {
+						kill(t,SIGUSR1);												// send NOK signal to program
 					}
 		}
 	}
@@ -158,11 +160,13 @@ int main(int argc, char **argv)
 /// re scan for changes in the programs
 		seconds = (Current_time - Crefresh_time);
 		if (seconds > 60 ) {
+		time (&Crefresh_time);
+		
 		tag_count = 0;
 		char *sql = "SELECT ID FROM Programs where status = 'Active'"; 						// get all 'active' programs
 		if (Csqlop (sql) != 0) {
 		exit (1);}
-		time (&Crefresh_time);
+		
 		}
 
 
@@ -174,6 +178,7 @@ int main(int argc, char **argv)
 
 int Callback(void *a_param, int argc, char **argv, char **column)
 {
+	//targets [tag_count] =999999999;
 	targets [tag_count] = atoi (argv[0]) ;
 	tag_count ++;
 	return 0;
