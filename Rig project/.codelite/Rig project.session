@@ -1,33 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Session Name="/home/pi/Desktop/Test_area/Testrig/Rig project/Rig project.workspace">
-  <int Value="0" Name="m_selectedTab"/>
+  <int Value="1" Name="m_selectedTab"/>
   <wxString Value="/home/pi/Desktop/Test_area/Testrig/Rig project/Rig project.workspace" Name="m_workspaceName"/>
   <TabInfoArray Name="TabInfoArray">
     <TabInfo>
       <wxString Value="/home/pi/Desktop/Test_area/Testrig/Rig project/Controller/main.c" Name="FileName"/>
-      <int Value="269" Name="FirstVisibleLine"/>
-      <int Value="288" Name="CurrentLine"/>
+      <int Value="297" Name="FirstVisibleLine"/>
+      <int Value="323" Name="CurrentLine"/>
       <wxArrayString Name="Bookmarks"/>
       <IntVector Name="CollapsedFolds"/>
     </TabInfo>
     <TabInfo>
       <wxString Value="/home/pi/Desktop/Test_area/Testrig/Rig project/God/main.c" Name="FileName"/>
-      <int Value="161" Name="FirstVisibleLine"/>
-      <int Value="159" Name="CurrentLine"/>
+      <int Value="174" Name="FirstVisibleLine"/>
+      <int Value="199" Name="CurrentLine"/>
       <wxArrayString Name="Bookmarks"/>
       <IntVector Name="CollapsedFolds"/>
     </TabInfo>
     <TabInfo>
       <wxString Value="/home/pi/Desktop/Test_area/Testrig/LIBS/Helpers.c" Name="FileName"/>
-      <int Value="36" Name="FirstVisibleLine"/>
-      <int Value="37" Name="CurrentLine"/>
+      <int Value="37" Name="FirstVisibleLine"/>
+      <int Value="35" Name="CurrentLine"/>
       <wxArrayString Name="Bookmarks"/>
       <IntVector Name="CollapsedFolds"/>
     </TabInfo>
     <TabInfo>
       <wxString Value="/home/pi/Desktop/Test_area/Testrig/FiFo/fifo/consumer/main.c" Name="FileName"/>
-      <int Value="180" Name="FirstVisibleLine"/>
-      <int Value="181" Name="CurrentLine"/>
+      <int Value="157" Name="FirstVisibleLine"/>
+      <int Value="155" Name="CurrentLine"/>
       <wxArrayString Name="Bookmarks"/>
       <IntVector Name="CollapsedFolds"/>
     </TabInfo>
@@ -40,8 +40,15 @@
     </TabInfo>
     <TabInfo>
       <wxString Value="/home/pi/Desktop/Test_area/Testrig/LIBS/redis_helper.c" Name="FileName"/>
-      <int Value="81" Name="FirstVisibleLine"/>
-      <int Value="82" Name="CurrentLine"/>
+      <int Value="94" Name="FirstVisibleLine"/>
+      <int Value="94" Name="CurrentLine"/>
+      <wxArrayString Name="Bookmarks"/>
+      <IntVector Name="CollapsedFolds"/>
+    </TabInfo>
+    <TabInfo>
+      <wxString Value="/home/pi/Desktop/Test_area/Testrig/LIBS/Core.c" Name="FileName"/>
+      <int Value="20" Name="FirstVisibleLine"/>
+      <int Value="18" Name="CurrentLine"/>
       <wxArrayString Name="Bookmarks"/>
       <IntVector Name="CollapsedFolds"/>
     </TabInfo>

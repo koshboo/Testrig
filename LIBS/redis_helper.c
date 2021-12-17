@@ -8,24 +8,24 @@
 const char *hostname =  "127.0.0.1";		//Host address of redis server
 struct timeval timeout = { 1, 500000 }; 	// 1.5 seconds 
 
-int Rsets(char* Name, char* Value)
+int Rsets(char* Name, char* Value)			// Redis SET string
 {
 	while (Rcon() == 0)						// atempt to connect to redis
 	{
 	sleep (5);								// if attempt fails wait 5 second and try again
 	}
-	int ok;
+	int ok;									// temp var
 	ok = 0;
-	char temp[100] = "";
-	sprintf(temp,"set %s %s",Name,Value);
-	if (c != NULL)
+	char temp[100] = "";					// temp var
+	sprintf(temp,"set %s %s",Name,Value);	// copy name and value to singl string
+	if (c != NULL)							// is the databas econnnected 	
 	{
-		reply = redisCommand(c,temp);
+		reply = redisCommand(c,temp);		// get redis reply
 	}
-redisFree(c);	
+redisFree(c);								// free redis info
 	return ok;
 }
-int Rseti(char* Name, int Value)
+int Rseti(char* Name, int Value)			// Redis SET Integer
 {
 	while (Rcon() == 0)						// atempt to connect to redis
 	{
@@ -36,12 +36,11 @@ int Rseti(char* Name, int Value)
 	ok = 0;
 	char temp[100] = "";
 	
-	sprintf(temp,"set %s %d",Name,Value);
-	if (c != NULL)
+	sprintf(temp,"set %s %d",Name,Value);	//Convert string and number
 	{
-		reply = redisCommand(c,temp);
+		reply = redisCommand(c,temp);		// get redis reply
 	}
-		redisFree(c);
+		redisFree(c);						// free redis connection
 	return ok;
 }
 int Rcon(void)
@@ -66,15 +65,15 @@ int Rcon(void)
 } 
 char* Rget (char* Name)
 {
-	while (Rcon() == 0)						// atempt to connect to redis
+	while (Rcon() == 0)						// attempt to connect to redis
 	{
 	sleep (5);								// if attempt fails wait 5 second and try again
 	}
 	char* st;
 	char temp[100] = "";
-	reply = NULL;
-	sprintf(temp,"get %s",Name);
-	reply = redisCommand(c,temp);
+	reply = NULL;			
+	sprintf(temp,"get %s",Name);			// create the command for redis
+	reply = redisCommand(c,temp);			// get the reply from redis
 	if (reply == NULL|| c->err)
 	{
 		fprintf(stderr,"redis Connection error: %s \n", c->errstr);

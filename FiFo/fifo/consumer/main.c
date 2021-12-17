@@ -49,15 +49,15 @@ int main(int argc, char **argv)
 	Rseti("DEC",i);															// set DEC pid in redis
 	IOPi_init(0x26,1);			// init ports
 	IOPi_init(0x20,1);
-	set_port_direction (0x26,1,0);				// set port directions
+	set_port_direction (0x26,1,0);											// set port directions
 	set_port_direction (0x26,0,0);
 	set_port_direction (0x20,1,0);
 	set_port_direction (0x20,0,0);
-	write_pin (0x20,3,1);						// set master arm for rams
+	write_pin (0x20,3,1);													// set master arm for rams
 	char name [] = "fifo";
 	strcpy(name,"DEC");									// copy The file name to temporary variable
 	strcat(name,".LOG");								// Add .err to the filename for the error log
-	freopen( name, "a", stdout );
+	freopen( name, "a", stdout );						// Redirect stdout to file
 	char Temp_Arry[50];									// temprary array for multiple things
 	char pipein  [30][30];								// reader pipe text name
 	int F_HANDR [30] = {-1};							// reader file handles
@@ -125,12 +125,12 @@ int main(int argc, char **argv)
 					printf("error %d = %s  read = %d bytes @ %d \n",errno,strerror(errno),tt,targets[i]);	// output error
 					printf("file target specs :- \n  name == %d \n Handle == %d \n ",targets[i],F_HANDR[i]);					// file details
 					printf("Time -- %s \n",asctime(localtime(&Current_time)));
-					fflush (stdout);														// flush output
+					fflush (stdout);													// flush output
 					cl = targets[i];
 					sprintf(temp1,"%d",cl);
 					RESPONSE = Rget (temp1);
-					if (RESPONSE != NULL) {													// Has redis returned a value
-					int t = atoi(RESPONSE);													// if reply is not null then convert to integer
+					if (RESPONSE != NULL) {												// Has redis returned a value
+					int t = atoi(RESPONSE);												// if reply is not null then convert to integer
 					if (t != 0 ) {														// Check if convertion worked
 					if (kill (t,0) == 0) {
 						kill(t,SIGUSR1);												// send NOK signal to program
@@ -140,22 +140,57 @@ int main(int argc, char **argv)
 					
 				}
 
-				if (tt == 0 ) {																// zero bytes returned
-					cl = targets[i];
+				if (tt == 0 ) {															// zero bytes returned
+					cl = targets[i];													// 
 					sprintf(temp1,"%d",cl);
 					RESPONSE = Rget (temp1);
-					if (RESPONSE != NULL) {													// Has redis returned a value
-						cl = atoi(RESPONSE);												// if reply is not null then convert to integer
-						if (cl != 0 ) {														// Check if convertion worked
+					if (RESPONSE != NULL) {												// Has redis returned a value
+						cl = atoi(RESPONSE);											// if reply is not null then convert to integer
+						if (cl != 0 ) {													// Check if convertion worked
 							kill(cl,SIGUSR1);
 						}
 					}
 				}
-				close (F_HANDR[i]);															// close file
+				close (F_HANDR[i]);														// close file
 			}
 		}
-		//sleep (1);
-		usleep (10);
+		usleep (10); 																	// sleep for 0.01 secoonds
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		time (&Current_time);
 /// re scan for changes in the programs
 		seconds = (Current_time - Crefresh_time);

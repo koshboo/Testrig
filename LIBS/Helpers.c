@@ -30,27 +30,26 @@ char* get_time (void)				// return time and date as string
 char* Add_intostr (char* S,int I)	// Add int to end of string
 {
 
-	char tem [33];
-	sprintf(tem, "%s%d",S, I);
-	S = tem;
-	return S;
+	char tem [33];					// setup temprary var
+	sprintf(tem, "%s%d",S, I);		// copy string and the integer 
+	S = tem;						// copy tem to s because we cant return local var
+	return S;						// return s 
 }
-void New_process (char* Name,char* Argval)		// generate new process
+
+void New_process (char* Name,char* Argval)		// generate new process````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````
 {
-	int status;
-	char* parmList[] = {"", Argval, NULL}; //  param list mus be NULL terminated first value is irrelervent
-	pid_t pid;
-	pid = fork();
+	int status;								// temp var
+	char* parmList[] = {"", Argval, NULL}; 	//  param list mus be NULL terminated first value is irrelervent
+	pid_t pid;								//	Temp var/local
+	pid = fork();							// fork into new process
 	if (pid == 0) {				// child process
 		pid = fork ();			// fork again.
 		if (pid == 0) {			// Grand child process
-			int t;
-			t = 0;
-			printf (" Attempting to start %s %s \n",Name,Argval);
-			fflush (stdout);
-			t = execv (Name,parmList);
-			if (t < 0) {
-				fprintf (stdout,"failed to start %s %s \n",Name,parmList[1]);
+			int t;				// Temp Var
+			t = 0;				// init t
+			printf (" Attempting to start %s %s \n",Argval); 	// print a message to the log 			t = execv (Name,parmList);							// clone the new process onto this one
+			if (t < 0) {										// If a neg number is returned then send message
+				fprintf (stdout,"failed to start %s %s \n",Name,parmList[1]);// add message to log
 			}
 			exit (0);					// grandchild end if it failed to fork 
 		} else {
@@ -59,45 +58,34 @@ void New_process (char* Name,char* Argval)		// generate new process
 	} else {
 		waitpid(pid, &status, 0);		// wait for child to finish 
 	}
+	fflush (stdout);					// flush buffer to make sure everything has been writtn to file
 }
 int openDB(void)
 {
-	FILE *fp;
-	char line [100];
-	fp = fopen("config", "r");
-	if (fp != NULL) {
-		ReadLine (line, sizeof (line), fp);
-		strcat(line,"Main.db");
-		DBloc = line;
-		if (access(DBloc,F_OK) == 0) {
+	FILE *fp;									// file name
+	char line [100];							// line  variable
+	fp = fopen("config", "r");					// open config
+	if (fp != NULL) {							// If Fp is null e.g `thje rounter
+		ReadLine (line, sizeof (line),fp);		// Readline from config																																													p);			
+		strcat(line,"Main.db");					// add the database name to the base folder
+		DBloc = line;							// convert to dbloc 
+		if (access(DBloc,F_OK) == 0) {			// if you can accees the database
 			rc = sqlite3_open (DBloc, &db);		// open db
-			while (rc != SQLITE_OK) {
-				fprintf(stderr, "Cannot open database: %s\n", sqlite3_errmsg(db));
-				sqlite3_close(db);
-				fflush(stderr);
-				sleep (1);
-				rc = sqlite3_open (DBloc, &db);
-			}
+			while (rc != SQLITE_OK) {			// check if the open was not sucsessfull2
+				fprintf(stderr, "Cannot open database: %s\n", sqlite3_errmsg(db)); // Logg error 
+				sqlite3_close(db);				// close the db
+				fflush(stderr);					// flush stderr
+				sleep (1);						
+				rc = sqlite3_open (DBloc, &db);	}//try to reopen DB 
 		}
-		else
-		{
-			fprintf(stderr, "Cannot locate DB file %s %d \n", line,1);
-			exit(1);
-			}
-		
-	} else {
-		fprintf(stderr, "Cannot locate config file %d \n", 1);
-		fflush(stderr);
-		exit(1);
 	}
-	fclose (fp);
 	return 1;
 
 }
 int closeDB(void)
 {
-	if (DB_stat != 0) {
-		sqlite3_close(db);
+	if (DB_stat != 0) {		// close the db connection
+		sqlite3_close(db);	
 		DB_stat = 0;
 	}
 

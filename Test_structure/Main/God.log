@@ -41,3 +41,72 @@ null -1
  Attempting to start ./Controller 78 
  Attempting to start ./Controller 78 
  Attempting to start ./Controller 78 
+ Attempting to start ./INTERFACE INTERFACE 
+null 1 
+null 1 
+null 1 
+null 1 
+null 1 
+null -1 
+ Attempting to start ./Controller 1 
+null 1 
+TApplication.HandleException SQLQuery1 : Could not find the requested record.
+  Stack trace:
+  $003B62F4
+  $003FB6F4
+  $00070268
+  $0023CEA0
+  $0023D7D8
+  $000405D0
+TApplication.HandleException SQLQuery1 : Could not find the requested record.
+  Stack tracenull 1 
+null 1 
+null 1 
+null 1 
+null 1 
+null -1 
+ Attempting to start ./Controller 1 
+null 1 
+null 1 
+null 1 
+null 1 
+null 1 
+null 1 
+null -1 
+ Attempting to start ./Controller 2 
+null 1 
+:
+  $003B62F4
+  $003FB6F4
+  $00070268
+  $0023CEA0
+  $0023D7D8
+  $000405D0
+TApplication.HandleException SQLQuery1 : Could not find the requested record.
+  Stack trace:
+  $003B62F4
+  $003FB6F4
+  $00070268
+  $0023CEA0
+  $0023D7D8
+  $000405D0
+TApplication.HandleException SQLQuery1 : Could not find the requested record.
+  Stack trace:
+  $003B62F4
+  $003FB6F4
+  $00070268
+  $0023CEA0
+  $0023D7D8
+  $000405D0
+WARNING: TLCLComponent.Destroy with LCLRefCount>0. Hint: Maybe the component is processing an event?
+WARNING: TLCLComponent.Destroy with LCLRefCount>0. Hint: Maybe the component is processing an event?
+null 1 
+null 1 
+null 1 
+null 1 
+null 1 
+null -1 
+ Attempting to start ./Controller 1 
+null 1 
+ Attempting to start ./INTERFACE INTERFACE 
+ Attempting to start ./INTERFACE INTERFACE 
