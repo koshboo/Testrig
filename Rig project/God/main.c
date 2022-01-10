@@ -78,12 +78,13 @@ int main(int argc, char **argv)
 			Start_FLAG = 0;
 			if (PIDS[count] == 0) {								// First time around;
 				loop_count = 0;
+				
 				while ((PIDS[count] == 0)||(loop_count < 5)) {	// Loop while redis reports error
 				PIDS[count] = reboot_p (ARG);					// Get updated pid from redis
 				if (PIDS[count] == 0) {							// if redis return a non zero no need to wait
-				sleep(1);
+				sleep(1);}
 				loop_count ++;
-				}
+				
 			}
 				
 				if (PIDS[count] > 0){							// did redis return a non zero non error
@@ -97,10 +98,11 @@ int main(int argc, char **argv)
 				loop_count = 0;
 				while ((PIDS[count] == 0)||(loop_count < 5)) {	// Loop while redis reports error
 				PIDS[count] = reboot_p (ARG);					// Get updated pid from redis
+				
 				if (PIDS[count] == 0) {							// if redis return a non zero no need to wait
-				sleep(1);
+				sleep(1);}
 				loop_count ++;
-				}
+				
 				}
 				if (PIDS[count] < 0){Start_FLAG = 1;}			// has redis returned null
 				if (PIDS[count] > 0){							// if pid returns a non negative and non zero number 
@@ -131,20 +133,23 @@ int main(int argc, char **argv)
 		closeDB();														// close db 
 		count = 0;														// zero the count 
 		while (count <= (targ_count -1)) {								// loop while we have another program to check
-		loop_count = 0;											// maximum of 5 loops - reset counter
-		Start_FLAG = 0;											// set the flag to not to restart the program
+			loop_count = 0;											// maximum of 5 loops - reset counter
+			Start_FLAG = 0;											// set the flag to not to restart the program
 			ARG[0] = 0;											// empty arg
 			sprintf (ARG,"%i",targets [count]);					// convert number to string
+			
 			if (PIDSP[count] >  0){								// Is current number > 0
+			printf ("abc2 %i  %i\n",Start_FLAG,PIDSP[count]);
+				fflush (stdout);
 				if (kill (PIDSP[count],0) != 0) 				// is currunt PID valid
 			{													// NO
 				loop_count = 0;									// reset loop
 				while ((PIDSP[count] == 0)||(loop_count < 5)) {	// loop max of 5 times while ther is an error
 				PIDSP[count] = reboot_p (ARG);					// Get updated pid from redis
 				if (PIDSP[count] == 0){							// did redis return a zero if not no need to wait 
-				sleep(1);										// sleep 1 second
+				sleep(1);}										// sleep 1 second
 				loop_count ++;									// increment loop counter
-					}
+					
 				}	
 			}
 				if (PIDSP[count] > 0){								//  if pid returns a non negative and non zero number 
@@ -156,6 +161,7 @@ int main(int argc, char **argv)
 			else
 				
 			{
+				
 				while ((PIDSP[count] == 0)||(loop_count < 5)) {	// Loop while redis reports error
 				PIDSP[count] = reboot_p (ARG);					// Get updated pid from redis
 				sleep(1);										// Wait 1 second 
@@ -163,7 +169,9 @@ int main(int argc, char **argv)
 				};
 				}
 			
-			if (PIDSP[count] < 0){Start_FLAG = 1;}				// redis returned null
+			if (PIDSP[count] < 0) {Start_FLAG = 1;}				// redis returned null
+			printf ("abc %i  %i\n",Start_FLAG,PIDSP[count]);
+			fflush (stdout);
 			if (Start_FLAG != 0) {								// is the restrt flag set ?
 				strcpy(target, "./");							// Add run command to target
 				strcat (target,"Controller");					// Add target name to target

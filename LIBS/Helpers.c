@@ -47,10 +47,14 @@ void New_process (char* Name,char* Argval)		// generate new process`````````````
 		if (pid == 0) {			// Grand child process
 			int t;				// Temp Var
 			t = 0;				// init t
-			printf (" Attempting to start %s %s \n",Argval); 	// print a message to the log 			t = execv (Name,parmList);							// clone the new process onto this one
+			printf (" Attempting to start %s %s \n",Name,Argval); 	// print a message to the log 			t = execv (Name,parmList);							// clone the new process onto this one
+			fflush (stdout);
+			t = execv (Name,parmList);
 			if (t < 0) {										// If a neg number is returned then send message
 				fprintf (stdout,"failed to start %s %s \n",Name,parmList[1]);// add message to log
 			}
+			printf (" failed to start %s \n",Argval); 	// print a message to the log 			t = execv (Name,parmList);							// clone the new process onto this one
+			fflush (stdout);
 			exit (0);					// grandchild end if it failed to fork 
 		} else {
 			exit (0);					// child ends

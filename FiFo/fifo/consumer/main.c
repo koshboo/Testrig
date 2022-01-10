@@ -110,6 +110,7 @@ int main(int argc, char **argv)
 				token = strtok(NULL," ");					// next token
 				++ cmd_num;									// increment cmd
 				}
+				close (F_HANDR[i]);	
 				remove (pipein[i]);
 						//printf("SIGNAL GEN======%d %d %d ========== %s   \n",in_arr [0],in_arr [1],in_arr [2],ch); // REMOVE before deploy
 						//**************************************************************************************
