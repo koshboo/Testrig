@@ -13,11 +13,11 @@
 #include <time.h>
 #include <errno.h>
 #include <signal.h>
-int linesd;
-#define debug printf("tag %d \n",linesd);	fflush (stdout);linesd = linesd + 1;
 //functions
 int Callback(void *a_param, int argc, char **argv, char **column);
+
 void writeDB(char *sql, int c); 
+ 
 //variables
 
 char *err_msg = 0;
@@ -45,7 +45,7 @@ void SIG_NOK (int signum)
 }
 int main(int argc, char **argv)
 {
-linesd = 0;
+
 	signal(SIGINT,SIG_OK);		// redirect sig int to my
 	signal(SIGUSR1,SIG_NOK);		// redirect sig int to my
 	
@@ -139,10 +139,11 @@ linesd = 0;
 
 	/* MAIN PROGRAM LOOP*/
 	while ( stata == 0 ) {						   				// loop until the count = target count
-		linesd = 0;
+
 		sprintf (temp,"SELECT Status,target FROM Programs where ID = %s",argv[1]);
+		printf("ball %i\n",DB_stat);fflush (stdout);
 		sql = temp; 												// copy query into the correct format
-		writeDB(sql,count);												// open DB Process query and close.
+		writeDB(sql,count);											// open DB Process query and close.
 		
 		fflush (stdout);
 		if (stata != 0) {
@@ -245,7 +246,7 @@ linesd = 0;
 		time(&newtime);
 		seconds = difftime(newtime,regtime); // how long since the last update to the sql database
 
-		if (seconds > 60) {
+		if (seconds > 300) {
 		
 			// get current time;
 			seconds = difftime(newtime,oldtime);						// how long did it take to do the cycle
@@ -253,6 +254,7 @@ linesd = 0;
 			targettime = targettime * seconds;							// calculate Time to finish
 			tartime = time(NULL) + targettime;							// convert to readable time date
 			char * s ;
+
 			s = asctime(gmtime(&tartime));								// store readable time and date in string
 			s[strcspn(s,"\n")]= '\0';									// remove the newline char
 			sprintf (temp,"UPDATE Programs SET count = %i, EST_Finish_date = '%s' WHERE ID = %s ",count, s,argv[1]); // Create string for update
@@ -284,11 +286,13 @@ linesd = 0;
 	writeDB(sql,count);																// open DB write and close.
 	time (&tartime);																// get current time dat
 	printf ("Stopped - %s \n %s",asctime(localtime(&tartime)), temp);				// Log Stop time in log file
-	fflush (stdout);}																// Flush to log file
+	fflush (stdout);
+	}																// Flush to log file
 	sprintf (temp,"UPDATE Programs SET Status = 'Completed' WHERE ID = %s \n",argv[1]); // Create string for update
 	sql = (temp);
 	writeDB(sql,count);																// open DB write and close.
-	return 0;																		// Terminate program
+	return 0;	
+																	// Terminate program
 }// TODO help
 
 void writeDB(char *sql, int c) 
@@ -298,34 +302,52 @@ void writeDB(char *sql, int c)
 
 		DB_stat = openDB();										// open DB will always return true
 	}
-		sqlite3_busy_timeout (db,2000);
-		rc = sqlite3_exec(db,sql,Callback, 0, &err_msg);   	    // if db open do the write
+	sqlite3_busy_timeout (db,2000);
+
+	if (DB_stat == 1) 
+		{	rc = sqlite3_exec(db,sql,Callback, 0, &err_msg);   	    // if db open do the write
+
 		if (rc != SQLITE_OK) {									// if the operation complete with out error
 			fprintf(stderr," dbase error %s  \n",err_msg);
 			fprintf(stderr," Output %s  \n",sql);
 			fflush (stderr);
 			closeDB();											// Close DB
-			sqlite3_free(err_msg);								// free the database connection
+			sqlite3_free(err_msg);								// free the error mrssage
 			int num =(rand()% (5 - 1 +1 ))+ 1;					// gen a random number
 			sleep (num);										// wait random second/s and try again
 		}
-		if (c != 0) {count = c;}
+		
+		if (c != 0) {count = c;}								// if c was written over write with count
+		closeDB();												// close db
+
+		//sqlite3_free(err_msg);
+		}
+		closeDB();
 }
+
+
 int Callback(void *a_param, int argc, char **argv, char **column)
 {
-	
+
 	if (argv [2] != NULL) {
+		
 		count = strtol(argv[2],NULL,10);						// Argumant 2 is the count value
 	}
+	
 	if (argv [1] != NULL) {
 		target = strtol(argv[1],NULL,10);						// Argumant 1 is the target value
 	}
 	stata = 5;
+	
 	if (argv [0] != NULL) {
 	if ((strcmp(argv[0],"Active")) == 0) {stata = 0;}			// Argument 0 is the status value
+
 	if ((strcmp(argv[0],"Paused")) == 0) {stata = 3;}			// If program paused stop running 
+
 	if ((strcmp(argv[0],"Completed")) == 0) {stata = 4;}		// If program Completed stop running 
 	
 	}
+	
 	return 0;
 }
+

@@ -69,7 +69,7 @@ int openDB(void)
 	FILE *fp;									// file name
 	char line [100];							// line  variable
 	fp = fopen("config", "r");					// open config
-	if (fp != NULL) {							// If Fp is null e.g `thje rounter
+	if (fp != NULL) {							// If Fp is null 
 		ReadLine (line, sizeof (line),fp);		// Readline from config																																													p);			
 		strcat(line,"Main.db");					// add the database name to the base folder
 		DBloc = line;							// convert to dbloc 
@@ -80,9 +80,11 @@ int openDB(void)
 				sqlite3_close(db);				// close the db
 				fflush(stderr);					// flush stderr
 				sleep (1);						
-				rc = sqlite3_open (DBloc, &db);	}//try to reopen DB 
+				rc = sqlite3_open (DBloc, &db);	
+			}//try to reopen DB 
 		}
-	}
+	
+	fclose(fp);}
 	return 1;
 
 }
